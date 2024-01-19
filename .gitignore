@@ -72,3 +72,12 @@ Plugins/*/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+#Additive
+Portfolio/Content/*
+Portfolio/Binaries/*
+Portfolio/Intermediate/*
+Portfolio/Saved/*
+Portfolio/.vsconfig
+Portfolio/SimpleProject.Sln.DotSettings.user
+Portfolio/Plugins
