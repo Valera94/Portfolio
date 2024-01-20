@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PortfolioGameMode.h"
-#include "PortfolioCharacter.h"
+#include "Portfolio/Game/PortfolioGameMode.h"
 #include "UObject/ConstructorHelpers.h"
 
 APortfolioGameMode::APortfolioGameMode()

@@ -6,7 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "PortfolioGameMode.generated.h"
 
-UCLASS(minimalapi)
+UCLASS(Abstract)
 class APortfolioGameMode : public AGameModeBase
 {
 	GENERATED_BODY()

@@ -20,7 +20,7 @@ APortfolioCharacter::APortfolioCharacter()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
-		
+
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -59,60 +59,74 @@ void APortfolioCharacter::BeginPlay()
 	// Call the base class  
 	Super::BeginPlay();
 
-	//Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-	}
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Input
+
+#pragma region /* *Input System */
+
 
 void APortfolioCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	check(InputMappingContext)
+		check(InputConfigData)
+
+		//Add Input Mapping Context
+		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+		{
+			if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+			{
+				Subsystem->AddMappingContext(InputMappingContext, 0);
+			}
+		}
+
+
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
-		
+
 		// Jumping
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Started, this, &ACharacter::Jump);
+		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
 
 		// Moving
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APortfolioCharacter::Move);
+		EnhancedInputComponent->BindAction(InputConfigData->InputMoveWASD, ETriggerEvent::Triggered, this, &APortfolioCharacter::MoveWASD);
 
 		// Looking
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &APortfolioCharacter::Look);
+		EnhancedInputComponent->BindAction(InputConfigData->TurnMouse, ETriggerEvent::Triggered, this, &APortfolioCharacter::Look);
 	}
-	else
-	{
-		UE_LOG(LogTemplateCharacter, Error, TEXT("'%s' Failed to find an Enhanced Input component! This template is built to use the Enhanced Input system. If you intend to use the legacy system, then you will need to update this C++ file."), *GetNameSafe(this));
-	}
+
 }
 
-void APortfolioCharacter::Move(const FInputActionValue& Value)
+void APortfolioCharacter::MoveWASD(const FInputActionValue& Value)
 {
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
-		// find out which way is forward
-		const FRotator Rotation = Controller->GetControlRotation();
-		const FRotator YawRotation(0, Rotation.Yaw, 0);
+		if (MovementVector != FVector2D::Zero())
+		{
+			//ChangeStatusInput
+			InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_WASDClick, EClickStatus::CS_Pressed);
 
-		// get forward vector
-		const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
-	
-		// get right vector 
-		const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+			// find out which way is forward
+			const FRotator Rotation = Controller->GetControlRotation();
+			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-		// add movement 
-		AddMovementInput(ForwardDirection, MovementVector.Y);
-		AddMovementInput(RightDirection, MovementVector.X);
+			// get forward vector
+			const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X) * InputConfigData->MultiplyScaleLookAxis;
+
+			// get right vector 
+			const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y) * InputConfigData->MultiplyScaleLookAxis;
+
+			// add movement 
+			AddMovementInput(ForwardDirection, MovementVector.Y);
+			AddMovementInput(RightDirection, MovementVector.X);
+		}
+		else
+		{
+			//ChangeStatusInput
+			InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_WASDClick, EClickStatus::CS_UnPressed);
+		}
 	}
 }
 
@@ -123,8 +137,22 @@ void APortfolioCharacter::Look(const FInputActionValue& Value)
 
 	if (Controller != nullptr)
 	{
-		// add yaw and pitch input to controller
-		AddControllerYawInput(LookAxisVector.X);
-		AddControllerPitchInput(LookAxisVector.Y);
+		if (LookAxisVector != FVector2D::Zero())
+		{
+
+			//ChangeStatusInput
+			InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_TurnMouse, EClickStatus::CS_Pressed);
+
+			// add yaw and pitch input to controller
+			AddControllerYawInput(LookAxisVector.X * InputConfigData->MultiplyScaleLookAxis);
+			AddControllerPitchInput(LookAxisVector.Y * InputConfigData->MultiplyScaleLookAxis * -1);
+		}
+		else
+		{
+			//ChangeStatusInput
+			InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_TurnMouse, EClickStatus::CS_UnPressed);
+		}
 	}
 }
+
+#pragma endregion
