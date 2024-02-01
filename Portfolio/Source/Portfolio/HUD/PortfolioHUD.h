@@ -6,12 +6,26 @@
 #include "GameFramework/HUD.h"
 #include "PortfolioHUD.generated.h"
 
+//class UUW_MainGame;
+
 /**
- * 
+ *
  */
 UCLASS()
 class PORTFOLIO_API APortfolioHUD : public AHUD
 {
 	GENERATED_BODY()
-	
+
+
+
+public:
+
+
+	//Main Game Widget
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Instanced, Category = "Layer", meta = (AllowPrivateAccess))
+	TObjectPtr<class UUW_MainGame> MainGameWidget;
+
+	virtual void BeginPlay() override;
+
+
 };

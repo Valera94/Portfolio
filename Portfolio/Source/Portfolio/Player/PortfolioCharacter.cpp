@@ -10,6 +10,12 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "Engine/AssetManager.h"
+#include "Engine/StreamableManager.h"
+#include "GameFramework/GameModeBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "Portfolio/HUD/PortfolioHUD.h"
+
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -61,14 +67,12 @@ void APortfolioCharacter::BeginPlay()
 
 }
 
-
 #pragma region /* *Input System */
 
 
 void APortfolioCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	check(InputMappingContext)
-		check(InputConfigData)
 
 		//Add Input Mapping Context
 		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
@@ -83,10 +87,6 @@ void APortfolioCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 
-		// Jumping
-		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Started, this, &ACharacter::Jump);
-		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-
 		// Moving
 		EnhancedInputComponent->BindAction(InputConfigData->InputMoveWASD, ETriggerEvent::Triggered, this, &APortfolioCharacter::MoveWASD);
 
@@ -95,6 +95,7 @@ void APortfolioCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	}
 
 }
+
 
 void APortfolioCharacter::MoveWASD(const FInputActionValue& Value)
 {

@@ -7,11 +7,24 @@
 #include "PortfolioPlayerState.generated.h"
 
 /**
- * 
+ *
  */
+
+UENUM()
+enum class EAttributeInformation :uint8
+{
+	Health,
+	Mana,
+	Energy,
+};
+
 UCLASS()
 class PORTFOLIO_API APortfolioPlayerState : public APlayerState
 {
 	GENERATED_BODY()
+
+
+protected:
+
 	
 };

@@ -13,6 +13,9 @@ class APortfolioGameMode : public AGameModeBase
 
 public:
 	APortfolioGameMode();
+
+
+	virtual void OnPostLogin(AController* NewPlayer) override;
 };
 
 

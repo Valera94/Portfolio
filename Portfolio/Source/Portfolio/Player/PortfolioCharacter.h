@@ -50,7 +50,7 @@ class APortfolioCharacter : public ACharacter
 
 #pragma endregion
 
-public:
+protected:
 	APortfolioCharacter();
 
 protected:
@@ -58,7 +58,7 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
 	// To add mapping context
-	virtual void BeginPlay();
+	virtual void BeginPlay() override;
 
 public:
 	/** Returns CameraBoom subobject **/

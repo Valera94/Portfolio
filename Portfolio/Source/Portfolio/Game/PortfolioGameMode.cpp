@@ -1,15 +1,18 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "PortfolioGameMode.h"
-#include "Portfolio/Game/PortfolioGameMode.h"
-#include "UObject/ConstructorHelpers.h"
+#include "Portfolio/Player/PortfolioCharacterAbility.h"
 
 APortfolioGameMode::APortfolioGameMode()
 {
-	// set default pawn class to our Blueprinted character
-	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"));
-	if (PlayerPawnBPClass.Class != NULL)
+
+}
+
+void APortfolioGameMode::OnPostLogin(AController* NewPlayer)
+{
+	if (Cast<APortfolioCharacterAbility>(DefaultPawnClass))
 	{
-		DefaultPawnClass = PlayerPawnBPClass.Class;
+		APortfolioCharacterAbility* NewChar = GetWorld()->SpawnActor<APortfolioCharacterAbility>(APortfolioCharacterAbility::StaticClass(), ChoosePlayerStart(NewPlayer)->GetActorTransform());
+		NewPlayer->Possess(NewChar);
 	}
 }
