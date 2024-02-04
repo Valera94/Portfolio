@@ -40,3 +40,12 @@ And since everyone loves with their eyes, and only then they look at the filling
 
 ![image](https://github.com/Valera94/Portfolio/assets/91465697/d1b40f6d-6731-467c-90cc-55cff092cfc3)
 
+
+### Constructor character
+- We will use game tags to be able to construct a character. Depending on the tasks, the character constructor can be predetermined by the choice of class, or the game can make it possible to use the character constructor as a lego dynamically add an opportunity during the game.
+> Мы будем использовать игровые тэги для возможности конструирования персонажа. В зависимости от задач, конструктор персонажа может быть предопределен выбором класса, либо игра может дать возможность использовать конструктор персонажа как лего динамически добавлять возможность в ходе игры.
+
+- The task of making it convenient for the game designer seems more difficult to implement than to create an opportunity for the player to determine his own skills and capabilities, so it is logical that we will go the hard way.
+> Задача сделать удобно для геймдизайнера, кажется более трудно осуществимой, чем создать возможность  для игрока самому определить свои навыки и возможности, поэтому логично, что мы пойдем по трудному пути.
+
+![image](https://github.com/Valera94/Portfolio/assets/91465697/535075c5-d412-4739-b5d2-eeee339e20a9)
