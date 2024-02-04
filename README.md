@@ -34,3 +34,9 @@ And since everyone loves with their eyes, and only then they look at the filling
 # Report:
 > Отчет:
 
+### Dedicate server
+- Connecting two clients to the server.
+> Подключение двух клиентов, к серверу.
+
+![image](https://github.com/Valera94/Portfolio/assets/91465697/d1b40f6d-6731-467c-90cc-55cff092cfc3)
+
