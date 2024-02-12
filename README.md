@@ -34,17 +34,25 @@ And since everyone loves with their eyes, and only then they look at the filling
 # Report:
 > Отчет:
 
-### Dedicate server
+## Dedicate server
 - Connecting two clients to the server.
 > Подключение двух клиентов, к серверу.
 
 ![image](https://github.com/Valera94/Portfolio/assets/91465697/d1b40f6d-6731-467c-90cc-55cff092cfc3)
 
-### -------------------------------------------------------------------------
-### Constructor character
-### -------------------------------------------------------------------------
-> https://youtu.be/pBvPtJBg6o4 Presentation ConstuctorCharacter
-> ![image](https://github.com/Valera94/Portfolio/assets/91465697/3900b2e1-8ecd-4da2-a598-1233ff36b0c6)
+
+
+
+
+
+## Constructor character
+
+- https://youtu.be/pBvPtJBg6o4 Presentation Constuctor Character
+> https://youtu.be/pBvPtJBg6o4 Презентация Конструктора персонажа
+   
+ ![image](https://github.com/Valera94/Portfolio/assets/91465697/3900b2e1-8ecd-4da2-a598-1233ff36b0c6)
+
+
 
 
 - We will use game tags to be able to construct a character. Depending on the tasks, the character constructor can be predetermined by the choice of class, or the game can make it possible to use the character constructor as a lego dynamically add an opportunity during the game.
@@ -55,8 +63,17 @@ And since everyone loves with their eyes, and only then they look at the filling
 
 ![image](https://github.com/Valera94/Portfolio/assets/91465697/535075c5-d412-4739-b5d2-eeee339e20a9)
 
-- I found a couple of interesting pictures to represent beauty. I aligned them under Atlas with the right dimensions in Adobe Photoshop , made the basic material with the parameters and output all these values to the DataTable, so that changing any data would be very simple for designers and would not need to run back into the code to edit the data. I made it possible to dynamically adapt to the vertical and horizontal dimensions of the image using the base material.
-> Нашел пару интересных картинок для представления красоты. Выровнял их под Atlas с нужными размерами в Adobe Photoshop , сделал базовый материал с параметрами и вывел все эти значения в DataTable , что бы изменение каких либо данных были весьма простыми для дизайнеров и не требовалось забегать снова в код для редактирования данных. Сделал возможность динамически адаптироваться под вертикальные размеры и горизонтальные размеры картинки с помощью базового материала.
+- I found a couple of interesting pictures to represent beauty. I aligned them under Atlas with the right dimensions in Adobe Photoshop. 
+> Нашел пару интересных картинок для представления красоты. Выровнял их под Atlas с нужными размерами в Adobe Photoshop. 
 
 ![image](https://github.com/Valera94/Portfolio/assets/91465697/e19b047c-4755-4edd-9fd5-de13e8ac683e)
 
+- Made the basic material with the parameters and output all these values to the DataTable, so that changing any data would be very simple for designers and would not need to run back into the code to edit the data. Memory control is carried out using "SoftPtr", loading was carried out both synchronously and asynchronously.
+> Cделал базовый материал с параметрами и вывел все эти значения в DataTable , что бы изменение каких либо данных были весьма простыми для дизайнеров и не требовалось забегать снова в код для редактирования данных. Контроль памяти осуществляется с помощью "SoftPtr", загрузка осуществлялась как синхронная и асинхронная.
+
+![image](https://github.com/Valera94/Portfolio/assets/91465697/9ad55e19-da74-431e-a913-a67586519527)
+
+- I made it possible to dynamically adapt to the vertical and horizontal dimensions of the image using the base material.
+> Сделал возможность динамически адаптироваться под вертикальные размеры и горизонтальные размеры картинки с помощью базового материала.
+
+![image](https://github.com/Valera94/Portfolio/assets/91465697/4e45d871-37bc-455a-9c22-8635b70236c8)
