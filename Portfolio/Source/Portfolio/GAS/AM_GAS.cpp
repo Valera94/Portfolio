@@ -8,5 +8,4 @@ void UAM_GAS::StartInitialLoading()
 {
 	Super::StartInitialLoading();
 	UAbilitySystemGlobals::Get().InitGlobalData();
-
 }

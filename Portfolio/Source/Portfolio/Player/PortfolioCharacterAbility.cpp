@@ -5,6 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "Engine/AssetManager.h"
 #include "Engine/AssetManagerSettings.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -14,6 +15,8 @@
 #include "Portfolio/GAS/Attribute/Attribute_Mana.h"
 #include "Portfolio/GAS/Attribute/Attribute_Energy.h"
 
+
+DEFINE_LOG_CATEGORY(Project_CharacterAbility);
 
 
 APortfolioCharacterAbility::APortfolioCharacterAbility()
@@ -27,79 +30,54 @@ APortfolioCharacterAbility::APortfolioCharacterAbility()
 	Mana = CreateDefaultSubobject<UAttribute_Mana>("UAttribute_Mana");
 	Energy = CreateDefaultSubobject<UAttribute_Energy>("UAttribute_Energy");
 
-
 }
 
-void APortfolioCharacterAbility::PossessedBy(AController* NewController)
+void APortfolioCharacterAbility::PostInitializeComponents()
 {
-	Super::PossessedBy(NewController);
+	Super::PostInitializeComponents();
+
+	check(GetAbilitySystemComponent());
+	GetAbilitySystemComponent()->InitAbilityActorInfo(this, this);
+
+
+	//Add default ability
+	for(auto i : DefaultAbility)
+	{
+		GetAbilitySystemComponent()->GiveAbility(i);
+	}
+
 
 }
 
 void APortfolioCharacterAbility::BeginPlay()
 {
 	Super::BeginPlay();
-
-
 }
-
-void APortfolioCharacterAbility::OnRep_PlayerState()
-{
-	Super::OnRep_PlayerState();
-
-}
-
-void APortfolioCharacterAbility::OnRep_Controller()
-{
-	Super::OnRep_Controller();
-
-}
-
 
 void APortfolioCharacterAbility::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+	// Set up action bindings
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) 
 	{
-		if (HasAuthority())
-		{
-			SetupInitialAbilitiesAndEffects();
-		}
 
-		for (const FStructAbilityWithInput& Binding : DA_DefaultSettings->StartInformation.StructAbilityWithInput)
-		{
-			EnhancedInputComponent->BindAction(Binding.InputAction, ETriggerEvent::Started, this, &APortfolioCharacterAbility::AbilityInputBindingsPressedHandler, Binding.InputID);
-			EnhancedInputComponent->BindAction(Binding.InputAction, ETriggerEvent::Completed, this, &APortfolioCharacterAbility::AbilityInputBindingsReleasedHandler, Binding.InputID);
-		}
-	}
-}
-
-void APortfolioCharacterAbility::AbilityInputBindingsPressedHandler(const EInputID AbilityInput)
-{
-	GetAbilitySystemComponent()->AbilityLocalInputPressed(static_cast<uint32>(AbilityInput));
-}
-
-
-void APortfolioCharacterAbility::AbilityInputBindingsReleasedHandler(const EInputID AbilityInput)
-{
-	GetAbilitySystemComponent()->AbilityLocalInputReleased(static_cast<uint32>(AbilityInput));
-
-}
-
-
-void APortfolioCharacterAbility::SetupInitialAbilitiesAndEffects()
-{
-	if (!GetAbilitySystemComponent())
-	{
-		return;
+		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Space);
+		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Completed, this, &APortfolioCharacterAbility::IA_Space);
 	}
 
-	if (InitiallyGrantedAbilitySpecHandles.IsEmpty())
+}
+
+void APortfolioCharacterAbility::IA_Space(const FInputActionValue& Value)
+{
+	bool ActivePressed = Value.Get<bool>();
+
+	if (ActivePressed)
 	{
-		for (const auto AbilitySetItem : DA_DefaultSettings->StartInformation.StructAbilityWithInput)
-		{
-			FGameplayAbilitySpec L_GameplayAbilitySpec = FGameplayAbilitySpec(AbilitySetItem.GameplayAbility, 0, static_cast<uint32>(AbilitySetItem.InputID));
-			GetAbilitySystemComponent()->GiveAbility(L_GameplayAbilitySpec);
-		}
+		GetAbilitySystemComponent()->TryActivateAbilityByClass(DefaultAbility[0]);
+	}
+	else
+	{
+		GetAbilitySystemComponent()->TryActivateAbilityByClass(DefaultAbility[0]);
 	}
 }

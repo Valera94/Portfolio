@@ -15,5 +15,4 @@ class PORTFOLIO_API UPortfolioGameplayAbility : public UGameplayAbility
 	GENERATED_BODY()
 
 	UPortfolioGameplayAbility();
-
 };

@@ -24,6 +24,7 @@ DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
 APortfolioCharacter::APortfolioCharacter()
 {
+
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
 
@@ -72,6 +73,8 @@ void APortfolioCharacter::BeginPlay()
 
 void APortfolioCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
 	check(InputMappingContext)
 
 		//Add Input Mapping Context

@@ -7,6 +7,11 @@
 #include "PortfolioCharacter.h"
 #include "Portfolio/GAS/Data/DA_DefaultSettings.h"
 #include "PortfolioCharacterAbility.generated.h"
+
+DECLARE_LOG_CATEGORY_EXTERN(Project_CharacterAbility, All, All);
+
+
+
 /**
  *
  */
@@ -16,46 +21,59 @@ class PORTFOLIO_API APortfolioCharacterAbility : public APortfolioCharacter, pub
 {
 	GENERATED_BODY()
 
-protected:
+public:
 	APortfolioCharacterAbility();
 
+	virtual void PostInitializeComponents() override;
+
+	virtual void BeginPlay() override;
 
 protected:
+
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = GAS, meta = (AllowPrivateAccess))
 	TObjectPtr<UAbilitySystemComponent> PortfolioAbilitySystemComponent;
+
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return PortfolioAbilitySystemComponent; }
 
+	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
 
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category= "Effects")
-	TArray<TSubclassOf<class UBaseGameplayEffect>> DefaultEffects;
 
-	//DefaultAttribute
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = GAS, meta = (AllowPrivateAccess))
-	TObjectPtr<const class UAttribute_Health> Health;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = GAS, meta = (AllowPrivateAccess))
-	TObjectPtr<const class UAttribute_Mana> Mana;
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = GAS, meta = (AllowPrivateAccess))
-	TObjectPtr<const class UAttribute_Energy> Energy;
+
 	
+
+
+
+	/* ----------------------------------------------------------------------------------------------------------------------
+	 *
+	 * We use attributes, abilities and effects inside the character,
+	 * for the reason that we can change the character to another and abilities,
+	 * attributes and effects can be completely different.
+	 *
+	 * ---------------------------------------------------------------------------------------------------------------------- */
+
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS", meta = (AllowPrivateAccess))
+	TArray<FBindInput> BindInputWithTag;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly,  Category = "GAS", meta = (AllowPrivateAccess))
+	TArray<TSubclassOf<UGameplayEffect>> DefaultEffects;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS", meta = (AllowPrivateAccess))
+	TArray<TSubclassOf<UGameplayAbility>> DefaultAbility;
+
 	UPROPERTY()
-	TArray<FGameplayAbilitySpecHandle> InitiallyGrantedAbilitySpecHandles;
+	TObjectPtr<const class UAttribute_Health> Health;
+	UPROPERTY()
+	TObjectPtr<const class UAttribute_Mana> Mana;
+	UPROPERTY()
+	TObjectPtr<const class UAttribute_Energy> Energy;
 
-	UPROPERTY(EditDefaultsOnly, Category = GAS, meta = (AllowPrivateAccess))
-	UDA_DefaultSettings* DA_DefaultSettings;
-
-	virtual void PossessedBy(AController* NewController) override;
-	virtual void BeginPlay() override;
-	virtual void OnRep_PlayerState() override;
-	virtual void OnRep_Controller() override;
-
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	//Pressed
-	void AbilityInputBindingsPressedHandler(const EInputID AbilityInput);
-	//UnPressed
-	void AbilityInputBindingsReleasedHandler(const EInputID AbilityInput);
-
-	void SetupInitialAbilitiesAndEffects();
+	/* ----------------------------------------------------------------------------------------------------------------------
+	 * Input Bind
+	 * ---------------------------------------------------------------------------------------------------------------------- */
+	
+	void IA_Space(const FInputActionValue& Value);
 
 };

@@ -16,30 +16,30 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
-UCLASS(config=Game)
+UCLASS()
 class APortfolioCharacter : public ACharacter
 {
 	GENERATED_BODY()
-
+	
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	USpringArmComponent* CameraBoom;
+	TObjectPtr<USpringArmComponent> CameraBoom;
 
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
-	UCameraComponent* FollowCamera;
-
+	TObjectPtr<UCameraComponent> FollowCamera;
 
 #pragma region /* *Input System */
 
+protected:
+
 	/** MappingContext */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputMappingContext* InputMappingContext;
+	TObjectPtr<UInputMappingContext> InputMappingContext;
 
 	/** InputConfigData */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputConfigData* InputConfigData;
-
+	TObjectPtr<UInputConfigData> InputConfigData;
 
 	/** Called for movement input */
 	void MoveWASD(const FInputActionValue& Value);
@@ -47,13 +47,11 @@ class APortfolioCharacter : public ACharacter
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
 
-
 #pragma endregion
 
 protected:
 	APortfolioCharacter();
 
-protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	

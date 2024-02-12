@@ -7,6 +7,11 @@
 #include "Portfolio/Player/PortfolioPlayerState.h"
 #include "AC_PortfolioAbilitySystem.generated.h"
 
+class UBaseGameplayEffect;
+class UAttributeSet_General;
+
+
+
 /**
  *
  */
@@ -15,14 +20,11 @@ class PORTFOLIO_API UAC_PortfolioAbilitySystem : public UAbilitySystemComponent
 {
 	GENERATED_BODY()
 
-public:
-	UAC_PortfolioAbilitySystem();
+protected:
 
-	virtual void BeginPlay() override;
+	UAC_PortfolioAbilitySystem(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	FORCEINLINE APortfolioPlayerState* GetPlayerState() const { return Cast<APortfolioPlayerState>(AbilityActorInfo.Get()->PlayerController->PlayerState); }
 
-	
 
-	
 };
