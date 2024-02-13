@@ -47,8 +47,8 @@ And since everyone loves with their eyes, and only then they look at the filling
 
 ## Constructor character
 
-- https://youtu.be/pBvPtJBg6o4 Presentation Constuctor Character
-> https://youtu.be/pBvPtJBg6o4 Презентация Конструктора персонажа
+- [https://youtu.be/pBvPtJBg6o4](https://www.youtube.com/watch?v=Fb5iHe853Ek) Presentation Constuctor Character
+> [https://youtu.be/pBvPtJBg6o4](https://www.youtube.com/watch?v=Fb5iHe853Ek) Презентация Конструктора персонажа
    
  ![image](https://github.com/Valera94/Portfolio/assets/91465697/3900b2e1-8ecd-4da2-a598-1233ff36b0c6)
 
