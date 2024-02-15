@@ -45,6 +45,7 @@ And since everyone loves with their eyes, and only then they look at the filling
 
 
 
+
 ## Constructor character
 
 - [https://youtu.be/pBvPtJBg6o4](https://www.youtube.com/watch?v=Fb5iHe853Ek) Presentation Constuctor Character
@@ -77,3 +78,8 @@ And since everyone loves with their eyes, and only then they look at the filling
 > Сделал возможность динамически адаптироваться под вертикальные размеры и горизонтальные размеры картинки с помощью базового материала.
 
 ![image](https://github.com/Valera94/Portfolio/assets/91465697/4e45d871-37bc-455a-9c22-8635b70236c8)
+
+- Added damage visualization. I have created a pool of 50 animations and they can run. Why 50? Because there may be a huge number of UI digits at the time of the attack, you can see for yourself what kind of chaos is happening after the attacks on the area. At the moment, this is a simple implementation that is activated by changing attributes.
+> Добавлена визуализация урона. Создал пул из 50 анимаций и они могут запускаться. Почему 50 ? Потому что, может быть огромное количество UI цифр в момент атаки, можете сами посмотреть какой хаос творится после атак по площади. В данный момент это простая реализация, которая активируется за счет изменения в атрибутах.
+
+![image](https://github.com/Valera94/Portfolio/assets/91465697/e1b03ae6-0d2f-4ee6-9ea4-1d2de843255c)
