@@ -14,7 +14,6 @@
 #include "Engine/StreamableManager.h"
 #include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
-#include "Portfolio/HUD/PortfolioHUD.h"
 
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);

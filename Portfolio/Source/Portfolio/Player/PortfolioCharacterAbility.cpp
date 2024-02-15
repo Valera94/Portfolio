@@ -4,9 +4,7 @@
 #include "PortfolioCharacterAbility.h"
 
 #include "EnhancedInputComponent.h"
-#include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
-#include "Engine/AssetManager.h"
 #include "Engine/AssetManagerSettings.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -15,7 +13,7 @@
 #include "Portfolio/GAS/Attribute/Attribute_Health.h"
 #include "Portfolio/GAS/Attribute/Attribute_Mana.h"
 #include "Portfolio/GAS/Attribute/Attribute_Energy.h"
-#include "Portfolio/HUD/HUDInterface.h"
+#include "ShowDamage/Content/AC_SD_WidgetTextDamage.h"
 
 
 DEFINE_LOG_CATEGORY(Project_CharacterAbility);
@@ -27,10 +25,12 @@ APortfolioCharacterAbility::APortfolioCharacterAbility()
 	PortfolioAbilitySystemComponent->SetIsReplicated(true);
 	PortfolioAbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
-
 	Health = CreateDefaultSubobject<UAttribute_Health>("UAttribute_Health");
 	Mana = CreateDefaultSubobject<UAttribute_Mana>("UAttribute_Mana");
 	Energy = CreateDefaultSubobject<UAttribute_Energy>("UAttribute_Energy");
+
+	WidgetTextDamage = CreateDefaultSubobject<UAC_SD_WidgetTextDamage>("AC_SD_WidgetTextDamage");
+	WidgetTextDamage->SetupAttachment(RootComponent);
 
 }
 

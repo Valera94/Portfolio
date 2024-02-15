@@ -7,6 +7,7 @@
 #include "PortfolioCharacter.h"
 #include "Portfolio/GAS/Data/DA_DefaultSettings.h"
 #include "Portfolio/HUD/HUDInterface.h"
+#include "ShowDamage/Content/AC_SD_WidgetTextDamage.h"
 #include "PortfolioCharacterAbility.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(Project_CharacterAbility, All, All);
@@ -21,6 +22,12 @@ UCLASS(Config = Game)
 class PORTFOLIO_API APortfolioCharacterAbility : public APortfolioCharacter, public IAbilitySystemInterface, public IHUDInterface
 {
 	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(Category = Character, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UAC_SD_WidgetTextDamage>WidgetTextDamage;
+
 
 public:
 	APortfolioCharacterAbility();

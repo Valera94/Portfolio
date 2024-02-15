@@ -8,6 +8,7 @@
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "Portfolio/HUD/HUDInterface.h"
+#include "ShowDamage/Content/AC_SD_WidgetTextDamage.h"
 
 UAttribute_Mana::UAttribute_Mana()
 	:Mana(100.f)
@@ -55,6 +56,14 @@ void UAttribute_Mana::PostGameplayEffectExecute(const FGameplayEffectModCallback
 			const float LocalDamageManaDone = GetDamageMana();
 			SetDamageMana(0.f);
 			SetMana(FMath::Clamp(GetMana() - LocalDamageManaDone, 0.f, GetManaMax()));
+
+			//Damage
+			UAC_SD_WidgetTextDamage* AC_SD_WidgetTextDamage = Cast<UAC_SD_WidgetTextDamage>(GetActorInfo()->AvatarActor->GetComponentByClass(UAC_SD_WidgetTextDamage::StaticClass()));
+			if (AC_SD_WidgetTextDamage != nullptr)
+			{
+				
+				AC_SD_WidgetTextDamage->Client_ShowDamageWidget(-LocalDamageManaDone,FLinearColor::Blue);
+			}
 		}
 	}
 }

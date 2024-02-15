@@ -6,7 +6,10 @@ public class Portfolio : ModuleRules
 {
 	public Portfolio(ReadOnlyTargetRules Target) : base(Target)
 	{
-		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+        PrivateDependencyModuleNames.AddRange(new string[] { "ShowDamage" });
+        PublicDependencyModuleNames.AddRange(new string[] { "ShowDamage" });
+
+        PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicDependencyModuleNames.AddRange(new string[]
         {
@@ -17,6 +20,8 @@ public class Portfolio : ModuleRules
             "EnhancedInput",
             "NetCore",
             "UMG",
+
+            "ShowDamage",
         });
 		
 		//GameplayAbilities
