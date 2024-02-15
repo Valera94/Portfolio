@@ -61,11 +61,31 @@ APortfolioCharacter::APortfolioCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
+void APortfolioCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+
+}
+
+
+
 void APortfolioCharacter::BeginPlay()
 {
 	// Call the base class  
 	Super::BeginPlay();
 
+}
+
+
+void APortfolioCharacter::Server_ChangeMesh_Implementation(USkeletalMesh* NewSkeletalMesh)
+{
+	NetMulticast_ChangeMesh(NewSkeletalMesh);
+}
+
+void APortfolioCharacter::NetMulticast_ChangeMesh_Implementation(USkeletalMesh* NewSkeletalMesh)
+{
+	GetMesh()->SetSkeletalMesh(NewSkeletalMesh);
 }
 
 #pragma region /* *Input System */

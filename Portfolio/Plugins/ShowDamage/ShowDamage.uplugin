@@ -1,0 +1,24 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "ShowDamage",
+	"Description": "The plugin that stores logic for showing damage.",
+	"Category": "Other",
+	"CreatedBy": "Valera Rosolovski",
+	"CreatedByURL": "https://github.com/Valera94",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "ShowDamage",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}

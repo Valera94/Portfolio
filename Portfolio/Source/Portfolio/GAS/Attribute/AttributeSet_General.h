@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
-#include "GameplayEffect.h"
 #include "AttributeSet_General.generated.h"
 
 class UAC_PortfolioAbilitySystem;
@@ -20,8 +19,12 @@ class UAC_PortfolioAbilitySystem;
 
 
 
+
+
+
+
 /**
- * 
+ *
  */
 UCLASS()
 class PORTFOLIO_API UAttributeSet_General : public UAttributeSet
@@ -31,7 +34,9 @@ class PORTFOLIO_API UAttributeSet_General : public UAttributeSet
 public:
 
 	UAttributeSet_General();
-
 	UAC_PortfolioAbilitySystem* GetAbilitySystemComponent() const;
+
+
+
 
 };

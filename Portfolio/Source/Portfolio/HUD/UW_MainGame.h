@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "HUDInterface.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Overlay.h"
 #include "UW_MainGame.generated.h"
@@ -22,7 +23,7 @@ enum ELayer
  *
  */
 UCLASS()
-class PORTFOLIO_API UUW_MainGame : public UUserWidget
+class PORTFOLIO_API UUW_MainGame : public UUserWidget, public IHUDInterface
 {
 	GENERATED_BODY()
 

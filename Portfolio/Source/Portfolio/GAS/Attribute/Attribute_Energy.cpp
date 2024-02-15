@@ -4,12 +4,15 @@
 #include "Attribute_Energy.h"
 #include "GameplayEffectExtension.h"
 #include "GameplayEffectTypes.h"
+#include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Portfolio/HUD/HUDInterface.h"
 
 
 UAttribute_Energy::UAttribute_Energy()
 	:Energy(100.f)
-, EnergyMax(100.f)
+	, EnergyMax(100.f)
 {
 
 }
@@ -17,6 +20,17 @@ UAttribute_Energy::UAttribute_Energy()
 void UAttribute_Energy::OnRep_Energy(const FGameplayAttributeData& OldEnergy)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttribute_Energy, Energy, OldEnergy);
+
+
+	if (GetActorInfo()->IsLocallyControlled()) 
+	{
+		TArray<UUserWidget*> ArrUserWidget;
+		UWidgetBlueprintLibrary::GetAllWidgetsWithInterface(GetWorld(), ArrUserWidget, UHUDInterface::StaticClass(), false);
+		for (UUserWidget*& i : ArrUserWidget)
+		{
+			Cast<IHUDInterface>(i)->ChangeEnergy(Energy.GetCurrentValue() / EnergyMax.GetCurrentValue());
+		}
+	}
 }
 
 void UAttribute_Energy::OnRep_EnergyMax(const FGameplayAttributeData& OldEnergyMax)

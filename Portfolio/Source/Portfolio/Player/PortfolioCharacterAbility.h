@@ -6,6 +6,7 @@
 #include "AbilitySystemInterface.h"
 #include "PortfolioCharacter.h"
 #include "Portfolio/GAS/Data/DA_DefaultSettings.h"
+#include "Portfolio/HUD/HUDInterface.h"
 #include "PortfolioCharacterAbility.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(Project_CharacterAbility, All, All);
@@ -17,7 +18,7 @@ DECLARE_LOG_CATEGORY_EXTERN(Project_CharacterAbility, All, All);
  */
 
 UCLASS(Config = Game)
-class PORTFOLIO_API APortfolioCharacterAbility : public APortfolioCharacter, public IAbilitySystemInterface
+class PORTFOLIO_API APortfolioCharacterAbility : public APortfolioCharacter, public IAbilitySystemInterface, public IHUDInterface
 {
 	GENERATED_BODY()
 
@@ -30,19 +31,12 @@ public:
 
 protected:
 
-
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = GAS, meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GAS", meta = (AllowPrivateAccess))
 	TObjectPtr<UAbilitySystemComponent> PortfolioAbilitySystemComponent;
 
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return PortfolioAbilitySystemComponent; }
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-
-
-
-
-	
-
 
 
 	/* ----------------------------------------------------------------------------------------------------------------------

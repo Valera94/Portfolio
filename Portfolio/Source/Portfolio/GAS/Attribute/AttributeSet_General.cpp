@@ -13,3 +13,6 @@ UAC_PortfolioAbilitySystem* UAttributeSet_General::GetAbilitySystemComponent() c
 {
 	return  Cast<UAC_PortfolioAbilitySystem>(GetOwningAbilitySystemComponent());
 }
+
+
+

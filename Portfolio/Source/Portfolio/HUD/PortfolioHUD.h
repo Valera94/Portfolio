@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "HUDInterface.h"
 #include "GameFramework/HUD.h"
 #include "PortfolioHUD.generated.h"
 
@@ -12,7 +13,7 @@
  *
  */
 UCLASS()
-class PORTFOLIO_API APortfolioHUD : public AHUD
+class PORTFOLIO_API APortfolioHUD : public AHUD, public IHUDInterface
 {
 	GENERATED_BODY()
 
@@ -26,6 +27,5 @@ public:
 	TObjectPtr<class UUW_MainGame> MainGameWidget;
 
 	virtual void BeginPlay() override;
-
-
+	virtual bool AddMainHeroWidget();
 };

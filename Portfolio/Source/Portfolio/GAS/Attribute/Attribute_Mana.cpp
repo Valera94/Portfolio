@@ -4,7 +4,10 @@
 #include "Attribute_Mana.h"
 #include "GameplayEffectExtension.h"
 #include "GameplayEffectTypes.h"
+#include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Portfolio/HUD/HUDInterface.h"
 
 UAttribute_Mana::UAttribute_Mana()
 	:Mana(100.f)
@@ -14,13 +17,21 @@ UAttribute_Mana::UAttribute_Mana()
 
 void UAttribute_Mana::OnRep_Mana(const FGameplayAttributeData& OldMana)
 {
-
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttribute_Mana, Mana, OldMana);
+
+	if (GetActorInfo()->IsLocallyControlled())
+	{
+		TArray<UUserWidget*> ArrUserWidget;
+		UWidgetBlueprintLibrary::GetAllWidgetsWithInterface(GetWorld(), ArrUserWidget, UHUDInterface::StaticClass(), false);
+		for (UUserWidget*& i : ArrUserWidget)
+		{
+			Cast<IHUDInterface>(i)->ChangeMP(Mana.GetCurrentValue() / ManaMax.GetCurrentValue());
+		}
+	}
 }
 
 void UAttribute_Mana::OnRep_ManaMax(const FGameplayAttributeData& OldManaMax)
 {
-
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttribute_Mana, ManaMax, OldManaMax);
 }
 

@@ -3,17 +3,30 @@
 
 #include "Attribute_Health.h"
 #include "GameplayEffectExtension.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
+#include "Portfolio/HUD/Layer/UW_LayerPawn.h"
 
 UAttribute_Health::UAttribute_Health()
 	:Health(100.f)
-	,HealthMax(100.f)
+	, HealthMax(100.f)
 {
 }
 
 void UAttribute_Health::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttribute_Health, Health, OldHealth);
+	if (GetActorInfo()->IsLocallyControlled())
+	{
+		TArray<UUserWidget*> ArrUserWidget;
+		UWidgetBlueprintLibrary::GetAllWidgetsWithInterface(GetWorld(), ArrUserWidget, UHUDInterface::StaticClass(), false);
+		for (UUserWidget*& i : ArrUserWidget)
+		{
+			Cast<IHUDInterface>(i)->ChangeHP(Health.GetCurrentValue() / HealthMax.GetCurrentValue());
+		}
+	}
+
 }
 
 void UAttribute_Health::OnRep_HealthMax(const FGameplayAttributeData& OldHealthMax)

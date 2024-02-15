@@ -5,6 +5,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/AssetManager.h"
 #include "Engine/AssetManagerSettings.h"
 #include "Kismet/GameplayStatics.h"
@@ -14,6 +15,7 @@
 #include "Portfolio/GAS/Attribute/Attribute_Health.h"
 #include "Portfolio/GAS/Attribute/Attribute_Mana.h"
 #include "Portfolio/GAS/Attribute/Attribute_Energy.h"
+#include "Portfolio/HUD/HUDInterface.h"
 
 
 DEFINE_LOG_CATEGORY(Project_CharacterAbility);
@@ -53,6 +55,7 @@ void APortfolioCharacterAbility::BeginPlay()
 {
 	Super::BeginPlay();
 }
+
 
 void APortfolioCharacterAbility::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

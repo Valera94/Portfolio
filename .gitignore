@@ -80,4 +80,9 @@ Portfolio/Intermediate/*
 Portfolio/Saved/*
 Portfolio/.vsconfig
 Portfolio/SimpleProject.Sln.DotSettings.user
-Portfolio/Plugins
+
+Portfolio/Plugins/MainMenu/Content/*
+Portfolio/Plugins/MainMenu/Intermediate/*
+
+Portfolio/Plugins/ShowDamage/Content/*
+Portfolio/Plugins/ShowDamage/Intermediate/*

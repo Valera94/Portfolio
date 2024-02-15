@@ -31,10 +31,10 @@ protected:
 public:
 	void GetDataTableRow(const int32 IndexSelect);
 
-	
+
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings", meta = (AllowPrivateAccess))
-	TObjectPtr<UDataTable> DataTableAsset;
+	TObjectPtr<UDataTable> DataTableAsset = nullptr;
 	UPROPERTY(BlueprintReadOnly)
 	FDataTableCharacterCreator RowDataTable;
 public:
@@ -48,8 +48,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings")
 	TSoftClassPtr<UUW_CharacterCreator> UW_ClassCharacterCreator;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings", meta=(ExposeOnSpawn))
-	TWeakObjectPtr<ACharacter> CharacterForBackView;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings", meta = (ExposeOnSpawn))
+	TObjectPtr <ACharacter> CharacterForBackView;
 
 protected:
 	//-------------------
@@ -65,8 +65,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default", meta = (AllowPrivateAccess))
 	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 
-
 public:
+
 
 	void CreateUW();
 
@@ -75,5 +75,5 @@ public:
 	virtual bool FChangeGender(const int32 IndexSelect) override;
 	virtual bool FChangeClass(const int32 IndexSelect) override;
 	virtual bool FClickComplete() override;
-	
+
 };

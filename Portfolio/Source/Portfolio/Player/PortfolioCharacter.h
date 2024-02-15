@@ -29,6 +29,12 @@ class APortfolioCharacter : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UCameraComponent> FollowCamera;
 
+
+public:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USkeletalMesh> SkeletalMesh;
+
 #pragma region /* *Input System */
 
 protected:
@@ -52,6 +58,16 @@ protected:
 protected:
 	APortfolioCharacter();
 
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+
+public:
+	UFUNCTION(Server, Reliable)
+	void Server_ChangeMesh(USkeletalMesh* NewSkeletalMesh);
+	UFUNCTION(NetMulticast, Reliable)
+	void NetMulticast_ChangeMesh(USkeletalMesh* NewSkeletalMesh);
+
+protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	

@@ -4,6 +4,7 @@
 #include "UW_General_Button.h"
 
 #include "Blueprint/WidgetBlueprintLibrary.h"
+#include "GameFramework/Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Portfolio/ConstructorChar/CharacterCreator.h"
 #include "Portfolio/ConstructorChar/InterfaceCharacterCreator.h"
@@ -32,4 +33,7 @@ void UUW_General_Button::ClickComplete()
 
 		Button->SetVisibility(ESlateVisibility::Collapsed);
 	}
+
+	
+
 }

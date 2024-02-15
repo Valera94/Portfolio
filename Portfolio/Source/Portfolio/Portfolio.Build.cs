@@ -15,6 +15,7 @@ public class Portfolio : ModuleRules
             "Engine", 
             "InputCore", 
             "EnhancedInput",
+            "NetCore",
             "UMG",
         });
 		

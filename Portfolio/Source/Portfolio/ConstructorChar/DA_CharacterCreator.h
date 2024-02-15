@@ -30,7 +30,7 @@ struct FStructInfo
 
 	//U - Horizontal, V - Vertical
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FVector2D ParameterMaterial;
+	FVector2D ParameterMaterial = FVector2D(0.f,0.f);
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FTextInfo TextInfo;
@@ -43,6 +43,7 @@ struct FStructGender
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSoftObjectPtr<USkeletalMesh> SkeletalMeshMan;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FTextInfo TextInfoMan;
 

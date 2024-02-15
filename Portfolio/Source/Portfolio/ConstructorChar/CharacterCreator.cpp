@@ -11,12 +11,16 @@
 #include "Engine/AssetManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Portfolio/Player/PortfolioCharacterAbility.h"
+#include <Net\UnrealNetwork.h>
 
 // Sets default values
 ACharacterCreator::ACharacterCreator()
 {
+	bReplicates = true;
+	
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+
 	//SceneComponent = Root
 	Root = CreateDefaultSubobject<USceneComponent>("Root");
 	SetRootComponent(Root);
@@ -47,6 +51,8 @@ void ACharacterCreator::BeginPlay()
 
 
 }
+
+
 
 void ACharacterCreator::CreateUW()
 {
@@ -116,10 +122,7 @@ bool ACharacterCreator::FChangeGender(const int32 IndexSelect)
 
 	if (IndexSelect == 1)
 	{
-		USkeletalMesh* SkeletalMeshLast = Cast<USkeletalMesh>(RowDataTable.struct_Gender.SkeletalMeshWomen.LoadSynchronous());
-		SkeletalMeshComponent->SetSkeletalMeshAsset(SkeletalMeshLast);
-
-
+		SkeletalMeshComponent->SetSkeletalMesh(Cast<USkeletalMesh> (RowDataTable.struct_Gender.SkeletalMeshWomen.LoadSynchronous()));
 		for (const auto& WidgetWithInterface : OutWidgets)
 		{
 			UUW_CharacterCreator* L_UW_CharacterCreator = Cast<UUW_CharacterCreator>(WidgetWithInterface);
@@ -129,9 +132,7 @@ bool ACharacterCreator::FChangeGender(const int32 IndexSelect)
 	}
 	else  if (IndexSelect == 0)
 	{
-		USkeletalMesh* SkeletalMeshLast = Cast<USkeletalMesh>(RowDataTable.struct_Gender.SkeletalMeshMan.LoadSynchronous());
-		SkeletalMeshComponent->SetSkeletalMeshAsset(SkeletalMeshLast);
-
+		SkeletalMeshComponent->SetSkeletalMesh(Cast<USkeletalMesh>(RowDataTable.struct_Gender.SkeletalMeshMan.LoadSynchronous()));
 		for (const auto& WidgetWithInterface : OutWidgets)
 		{
 			UUW_CharacterCreator* L_UW_CharacterCreator = Cast<UUW_CharacterCreator>(WidgetWithInterface);
@@ -143,6 +144,7 @@ bool ACharacterCreator::FChangeGender(const int32 IndexSelect)
 
 
 }
+
 
 bool ACharacterCreator::FChangeClass(const int32 IndexSelect)
 {
@@ -162,11 +164,11 @@ bool ACharacterCreator::FChangeClass(const int32 IndexSelect)
 
 bool ACharacterCreator::FClickComplete()
 {
-	if (CharacterForBackView==nullptr) { return false; }
+	if (CharacterForBackView==nullptr && SkeletalMeshComponent==nullptr) { return false; }
 
-	CharacterForBackView->GetMesh()->SetSkeletalMesh(SkeletalMeshComponent->GetSkeletalMeshAsset());
+	//Cast<APortfolioCharacter>(CharacterForBackView)->Server_ChangeSkeletalMesh_Implementation(SkeletalMeshComponent->GetSkeletalMeshAsset());
 	GetNetOwningPlayer()->GetPlayerController(GetWorld())->SetViewTargetWithBlend(Cast<AActor>(CharacterForBackView));
-
+	Cast<APortfolioCharacter>(CharacterForBackView)->Server_ChangeMesh(SkeletalMeshComponent->SkeletalMesh);
 	Destroy();
 	return false;
 }

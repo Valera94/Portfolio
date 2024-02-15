@@ -9,11 +9,10 @@
 void APortfolioHUD::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	if(MainGameWidget)
-	{
-		MainGameWidget->AddToViewport(); //Create
-		
-	}
-	
+}
+
+bool APortfolioHUD::AddMainHeroWidget()
+{
+	if (MainGameWidget) { MainGameWidget->AddToViewport(); } // CreateWidget
+	return false;
 }
