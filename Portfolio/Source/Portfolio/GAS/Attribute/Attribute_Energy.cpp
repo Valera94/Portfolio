@@ -7,29 +7,23 @@
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
-#include "Portfolio/HUD/HUDInterface.h"
+#include "Portfolio/Player/PortfolioCharacterAbility.h"
 
 
 UAttribute_Energy::UAttribute_Energy()
 	:Energy(100.f)
 	, EnergyMax(100.f)
 {
-
 }
 
 void UAttribute_Energy::OnRep_Energy(const FGameplayAttributeData& OldEnergy)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttribute_Energy, Energy, OldEnergy);
 
-
-	if (GetActorInfo()->IsLocallyControlled()) 
+	if (GetActorInfo()->IsLocallyControlled())
 	{
-		TArray<UUserWidget*> ArrUserWidget;
-		UWidgetBlueprintLibrary::GetAllWidgetsWithInterface(GetWorld(), ArrUserWidget, UHUDInterface::StaticClass(), false);
-		for (UUserWidget*& i : ArrUserWidget)
-		{
-			Cast<IHUDInterface>(i)->ChangeEnergy(Energy.GetCurrentValue() / EnergyMax.GetCurrentValue());
-		}
+		ChangeEnergy(FVector2D(EnergyMax.GetCurrentValue(), Energy.GetCurrentValue()));
+		UWDamageNotify(2, Energy.GetCurrentValue() - OldEnergy.GetBaseValue(), GetActorInfo()->AvatarActor.Get());
 	}
 }
 
@@ -42,23 +36,19 @@ void UAttribute_Energy::PreAttributeChange(const FGameplayAttribute& Attribute, 
 {
 	Super::PreAttributeChange(Attribute, NewValue);
 
-	if (Attribute == GetEnergyAttribute())
+	if (Attribute == GetEnergyMaxAttribute())
 	{
-		NewValue = FMath::Clamp(NewValue, 0.f, GetEnergyMax());
+		AdjustAttributeForMaxChange(Energy, EnergyMax, NewValue, GetEnergyAttribute());
 	}
 }
 
 void UAttribute_Energy::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
 {
 	Super::PostGameplayEffectExecute(Data);
-	if (Data.EvaluatedData.Attribute == GetDamageEnergyAttribute())
+
+	if (Data.EvaluatedData.Attribute == GetEnergyAttribute())
 	{
-		if (GetDamageEnergy() > 0)
-		{
-			const float LocalDamageEnergyDone = GetDamageEnergy();
-			SetDamageEnergy(0.f);
-			SetEnergy(FMath::Clamp(GetEnergy() - LocalDamageEnergyDone, 0.f, GetEnergyMax()));
-		}
+		SetEnergy(FMath::Clamp(GetEnergy(), 0.f, GetEnergyMax()));
 	}
 }
 
@@ -68,4 +58,15 @@ void UAttribute_Energy::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttribute_Energy, Energy, COND_None, REPNOTIFY_OnChanged);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAttribute_Energy, EnergyMax, COND_None, REPNOTIFY_OnChanged);
+}
+
+void UAttribute_Energy::ChangeEnergy_Implementation(const FVector2D Value)
+{
+	TArray<UUserWidget*> UserWidgetArr;
+	UWidgetBlueprintLibrary::GetAllWidgetsWithInterface(GetWorld(), UserWidgetArr, UHUDInterface::StaticClass(), false);
+
+	for (auto i : UserWidgetArr)
+	{
+		Cast<IHUDInterface>(i)->IHI_ChangeEnergyAttribute(Value);
+	}
 }

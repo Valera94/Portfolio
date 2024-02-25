@@ -16,33 +16,31 @@ class PORTFOLIO_API UAttribute_Energy : public UAttributeSet_General
 	GENERATED_BODY()
 
 public:
-
-	ATTRIBUTE_ACCESSORS(UAttribute_Energy, Energy)
-	ATTRIBUTE_ACCESSORS(UAttribute_Energy, EnergyMax)
-	ATTRIBUTE_ACCESSORS(UAttribute_Energy, DamageEnergy)
-
-private:
-
 	UAttribute_Energy();
 
 	UPROPERTY(BlueprintReadOnly, Category = "Energy", ReplicatedUsing = OnRep_Energy, meta = (AllowPrivateAccess))
 	FGameplayAttributeData Energy;
+	ATTRIBUTE_ACCESSORS(UAttribute_Energy, Energy)
 
 	UPROPERTY(BlueprintReadOnly, Category = "Energy", ReplicatedUsing = OnRep_EnergyMax, meta = (AllowPrivateAccess))
 	FGameplayAttributeData EnergyMax;
+	ATTRIBUTE_ACCESSORS(UAttribute_Energy, EnergyMax)
 
-	UPROPERTY(BlueprintReadOnly, Category = "Energy", meta = (AllowPrivateAccess))
-	FGameplayAttributeData DamageEnergy;
+protected: //Virtual ************************************************************************************
 
+	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps)  const override;
+
+protected: //OnRep ************************************************************************************
 
 	UFUNCTION()
 	virtual void OnRep_Energy(const FGameplayAttributeData& OldEnergy);
 	UFUNCTION()
 	virtual void OnRep_EnergyMax(const FGameplayAttributeData& OldEnergyMax);
 
+protected: // Interface ************************************************************************************
 
-
-	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
-	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
-	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps)  const override;
+	UFUNCTION(Client, Reliable)
+	void ChangeEnergy(const FVector2D Value);
 };

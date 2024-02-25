@@ -17,13 +17,16 @@ class SHOWDAMAGE_API UUW_ShowDamage_Damage : public UUserWidget
 
 public:
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (BindWidget))
+	UPROPERTY(BlueprintReadWrite,Instanced, EditAnywhere, meta = (BindWidget))
 	TObjectPtr<UTextBlock> DisplayText;
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void PlayAnimbationBP();
 
-	UFUNCTION()
-	void AddToScreen(const int Damage, const FLinearColor LinearColor);
+	/*
+	 *	SelectAttribute = 0_Health,1_Mana,2_Energy;
+	 *	Damage = >0_intsDamage, <0_ItsHeal;
+	 */
+	void AddToScreen(const int SelectAttribute, const int Damage);
 
 };

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
 #include "AttributeSet_General.h"
+#include "Portfolio/Player/PortfolioCharacterAbility.h"
 #include "Attribute_Mana.generated.h"
 
 
@@ -21,7 +22,6 @@ public:
 
 	ATTRIBUTE_ACCESSORS(UAttribute_Mana, Mana)
 	ATTRIBUTE_ACCESSORS(UAttribute_Mana, ManaMax)
-	ATTRIBUTE_ACCESSORS(UAttribute_Mana, DamageMana)
 
 
 protected:
@@ -32,22 +32,22 @@ protected:
 	UPROPERTY(BlueprintReadOnly, Category = "Mana", ReplicatedUsing = OnRep_ManaMax, meta = (AllowPrivateAccess))
 	FGameplayAttributeData ManaMax;
 
-	UPROPERTY(BlueprintReadOnly, Category = "Mana", meta = (AllowPrivateAccess))
-	FGameplayAttributeData DamageMana;
-
 private:
 	UAttribute_Mana();
+
 
 	UFUNCTION()
 	virtual void OnRep_Mana(const FGameplayAttributeData& OldMana);
 	UFUNCTION()
 	virtual void OnRep_ManaMax(const FGameplayAttributeData& OldManaMax);
-
-
+	
 
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps)  const override;
 
+
+	UFUNCTION(Client, Reliable)
+	void ChangeMana(FVector2D Value);
 };

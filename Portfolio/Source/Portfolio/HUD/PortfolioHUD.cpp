@@ -2,9 +2,7 @@
 
 
 #include "PortfolioHUD.h"
-
 #include "UW_MainGame.h"
-
 
 void APortfolioHUD::BeginPlay()
 {

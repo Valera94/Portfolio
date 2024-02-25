@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "HUDInterface.h"
 #include "GameFramework/HUD.h"
+#include "Layer/UW_LayerPawn.h"
 #include "PortfolioHUD.generated.h"
 
 //class UUW_MainGame;
@@ -13,7 +13,7 @@
  *
  */
 UCLASS()
-class PORTFOLIO_API APortfolioHUD : public AHUD, public IHUDInterface
+class PORTFOLIO_API APortfolioHUD : public AHUD
 {
 	GENERATED_BODY()
 
@@ -21,11 +21,12 @@ class PORTFOLIO_API APortfolioHUD : public AHUD, public IHUDInterface
 
 public:
 
-
 	//Main Game Widget
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Instanced, Category = "Layer", meta = (AllowPrivateAccess))
 	TObjectPtr<class UUW_MainGame> MainGameWidget;
 
 	virtual void BeginPlay() override;
+
 	virtual bool AddMainHeroWidget();
+
 };

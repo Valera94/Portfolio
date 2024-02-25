@@ -11,7 +11,6 @@ class UBaseGameplayEffect;
 class UAttributeSet_General;
 
 
-
 /**
  *
  */
@@ -25,6 +24,5 @@ protected:
 	UAC_PortfolioAbilitySystem(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	FORCEINLINE APortfolioPlayerState* GetPlayerState() const { return Cast<APortfolioPlayerState>(AbilityActorInfo.Get()->PlayerController->PlayerState); }
-
 
 };

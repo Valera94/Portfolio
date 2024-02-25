@@ -49,5 +49,6 @@ private:
 	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps)  const override;
 
-
+	UFUNCTION(Client,Reliable)
+	void ChangeHealth(FVector2D Value);
 };

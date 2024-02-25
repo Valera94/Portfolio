@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include <GameplayEffectTypes.h>
 #include "GameFramework/PlayerState.h"
 #include "PortfolioPlayerState.generated.h"
 
@@ -23,8 +24,6 @@ class PORTFOLIO_API APortfolioPlayerState : public APlayerState
 {
 	GENERATED_BODY()
 
-
-protected:
-
+public:
 	
 };

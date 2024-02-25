@@ -23,9 +23,10 @@ class PORTFOLIO_API IHUDInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual bool ChangeHP(const float Percent) { return false; };
-	virtual bool  ChangeMP(const float Percent) { return false; };
-	virtual bool  ChangeEnergy(const float Percent) { return false; };
-	virtual bool  EnableWidgetsAttribute(const bool bEnableMP, bool bEnableEnergy) { return false; };
-	virtual bool  AddMainHeroWidget() { return false; };
+	//X-MaxValue,Y-CurrentValue;
+	virtual void IHI_ChangeEnergyAttribute(FVector2D Value) { ; }
+	//X-MaxValue,Y-CurrentValue;
+	virtual void IHI_ChangeHealthAttribute(FVector2D Value) { ; }
+	//X-MaxValue,Y-CurrentValue;
+	virtual void IHI_ChangeManaAttribute(FVector2D Value) { ; }
 };

@@ -38,7 +38,3 @@ void UUW_MainGame::ChangeWidgetLayerToOther(const ELayer SelectLayerChange, UUse
 	}
 
 }
-
-void UUW_MainGame::NativeConstruct()
-{
-}

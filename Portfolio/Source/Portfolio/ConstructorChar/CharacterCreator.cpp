@@ -168,7 +168,8 @@ bool ACharacterCreator::FClickComplete()
 
 	//Cast<APortfolioCharacter>(CharacterForBackView)->Server_ChangeSkeletalMesh_Implementation(SkeletalMeshComponent->GetSkeletalMeshAsset());
 	GetNetOwningPlayer()->GetPlayerController(GetWorld())->SetViewTargetWithBlend(Cast<AActor>(CharacterForBackView));
-	Cast<APortfolioCharacter>(CharacterForBackView)->Server_ChangeMesh(SkeletalMeshComponent->SkeletalMesh);
+	//Cast<APortfolioCharacter>(CharacterForBackView)->Server_ChangeMesh(SkeletalMeshComponent->SkeletalMesh);   Old
+	Cast<APortfolioCharacter>(CharacterForBackView)->Server_ChangeMesh(SkeletalMeshComponent->GetSkeletalMeshAsset()); //New
 	Destroy();
 	return false;
 }

@@ -14,5 +14,9 @@ class PORTFOLIO_API APortfolioPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+
+public:
 	virtual void BeginPlay() override;
+	virtual bool InputKey(const FInputKeyParams& Params) override;
+	FString OldPressKey;
 };

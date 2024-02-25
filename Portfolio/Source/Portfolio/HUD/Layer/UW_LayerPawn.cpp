@@ -3,28 +3,31 @@
 
 #include "UW_LayerPawn.h"
 
+#include "Portfolio/GAS/Attribute/Attribute_Energy.h"
+#include "Portfolio/HUD/UW_MainGame.h"
 
-bool UUW_LayerPawn::ChangeHP(float Percent)
+
+void UUW_LayerPawn::NativeConstruct()
 {
-	ProgressBarHealth->SetPercent(Percent);
-	return false;
+	Super::NativeConstruct();
+
+	ProgressBarHealth->SetPercent(1);
+	ProgressBarMP->SetPercent(1);
+	ProgressBarEnergy->SetPercent(1);
 }
 
-bool UUW_LayerPawn::ChangeMP(float Percent)
+
+void UUW_LayerPawn::IHI_ChangeEnergyAttribute(FVector2D Value)
 {
-	ProgressBarMP->SetPercent(Percent);
-	return false;
+	ProgressBarEnergy->SetPercent(Value.Y / Value.X);
 }
 
-bool UUW_LayerPawn::ChangeEnergy(float Percent)
+void UUW_LayerPawn::IHI_ChangeManaAttribute(FVector2D Value)
 {
-	ProgressBarEnergy->SetPercent(Percent);
-	return false;
+	ProgressBarMP->SetPercent(Value.Y / Value.X);
 }
 
-bool UUW_LayerPawn::EnableWidgetsAttribute(bool bEnableMP, bool bEnableEnergy)
+void UUW_LayerPawn::IHI_ChangeHealthAttribute(FVector2D Value)
 {
-	if (!bEnableMP) { ProgressBarMP->SetVisibility(ESlateVisibility::Collapsed); }
-	if (!bEnableEnergy) { ProgressBarEnergy->SetVisibility(ESlateVisibility::Collapsed); }
-	return false;
+	ProgressBarHealth->SetPercent(Value.Y / Value.X);
 }

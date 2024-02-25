@@ -6,7 +6,9 @@ public class Portfolio : ModuleRules
 {
 	public Portfolio(ReadOnlyTargetRules Target) : base(Target)
 	{
-        PrivateDependencyModuleNames.AddRange(new string[] { "ShowDamage" });
+        
+         // From my Plugin
+         PrivateDependencyModuleNames.AddRange(new string[] { "ShowDamage" });
         PublicDependencyModuleNames.AddRange(new string[] { "ShowDamage" });
 
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
@@ -24,6 +26,7 @@ public class Portfolio : ModuleRules
             "ShowDamage",
         });
 		
+
 		//GameplayAbilities
         PublicDependencyModuleNames.AddRange(new string[]
         {
@@ -31,5 +34,14 @@ public class Portfolio : ModuleRules
             "GameplayTags",
             "GameplayTasks",
         });
-	}
+
+
+        //AI
+        PublicDependencyModuleNames.AddRange(new string[]
+        {
+            "AIModule",
+            "GameplayTasks",
+            "NavigationSystem"
+        });
+    }
 }

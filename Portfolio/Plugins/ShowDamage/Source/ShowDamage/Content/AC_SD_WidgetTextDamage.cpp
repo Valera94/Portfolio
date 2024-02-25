@@ -9,48 +9,44 @@ UAC_SD_WidgetTextDamage::UAC_SD_WidgetTextDamage()
 {
 }
 
-void UAC_SD_WidgetTextDamage::Client_CreateArrWidgets_Implementation()
+void UAC_SD_WidgetTextDamage::CreateArrWidgets()
 {
+	ArrWidgetClass.Init(0, HowManyWidgetsDoNeedCreate);
 
-	if (GetWidgetClass() != nullptr)
+	if (this->GetWidgetClass() != nullptr)
 	{
-		for (int a = 0; a < 50; a++)
+		for (int a = 0; a < HowManyWidgetsDoNeedCreate; a++)
 		{
-			UUW_ShowDamage_Damage* NewWidget = Cast<UUW_ShowDamage_Damage>(CreateWidget(GetWorld(), GetWidgetClass(), *(GetWidgetClass()->GetName().Append(FString::FromInt(a)))));
-			ArrWidgetClass.Add(NewWidget);
+			//UUW_ShowDamage_Damage* NewWidget = Cast<UUW_ShowDamage_Damage>(CreateWidget(GetWorld(), this->GetWidgetClass(), *(GetWidgetClass()->GetName().Append(FString::FromInt(a)))));
+			////ArrWidgetClass.Add(NewWidget);
+			//ArrWidgetClass[a] = NewWidget;
+
+			ArrWidgetClass[a] = Cast<UUW_ShowDamage_Damage>(CreateWidget(GetWorld(), this->GetWidgetClass(), *(GetWidgetClass()->GetName().Append(FString::FromInt(a)))));
+
 		}
-	}
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "need use parent widget 'UUW_ShowDamage_Damage' ");
 	}
 }
 
-void UAC_SD_WidgetTextDamage::Client_ShowDamageWidget_Implementation(const int Damage,const FLinearColor LinearColor)
+void UAC_SD_WidgetTextDamage::ShowDamageWidget_Implementation(const int SelectAttribute, const int Damage)
 {
-	if (ArrWidgetClass.IsEmpty())
+	LastSelectedWidgetFromArr == HowManyWidgetsDoNeedCreate-1 ? LastSelectedWidgetFromArr = 0 : LastSelectedWidgetFromArr++;
+
+	if (ArrWidgetClass[LastSelectedWidgetFromArr] == nullptr || ArrWidgetClass.IsEmpty())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "Empty arr");
+		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, " 'UAC_SD_WidgetTextDamage' -> NoValidArr or Empty");
 
 		return;
 	}
-
-	LastSelectedWidgetFromArr == HowManyWidgetsDoNeedCreate ? LastSelectedWidgetFromArr = 0 : LastSelectedWidgetFromArr++;
-
-	if (ArrWidgetClass[LastSelectedWidgetFromArr] == nullptr)
+	else
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, "NoValidArr");
-
-		return;
+		ArrWidgetClass[LastSelectedWidgetFromArr]->AddToScreen(SelectAttribute, Damage);
 	}
-
-	ArrWidgetClass[LastSelectedWidgetFromArr]->AddToScreen(Damage,LinearColor);
-
 }
 
 void UAC_SD_WidgetTextDamage::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	Client_CreateArrWidgets();
+	CreateArrWidgets();
 }
 

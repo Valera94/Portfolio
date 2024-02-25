@@ -13,6 +13,15 @@ class UInputAction;
 class UGameplayAbility;
 class UAttributeSet;
 
+UENUM(BlueprintType)
+enum class EAttribute :uint8
+{
+	A_Health,
+	A_Mana,
+	A_Energy,
+
+};
+
 
 UENUM(BlueprintType)
 enum class EInputID :uint8

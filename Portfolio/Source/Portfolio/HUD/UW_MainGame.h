@@ -18,7 +18,6 @@ enum ELayer
 	Layer_Menu, //OverlayCanvas - index 2
 };
 
-
 /**
  *
  */
@@ -27,6 +26,8 @@ class PORTFOLIO_API UUW_MainGame : public UUserWidget, public IHUDInterface
 {
 	GENERATED_BODY()
 
+public:
+	
 
 public:
 
@@ -41,16 +42,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UOverlay* OverlayCanvas;
 
+public:
 	//NeedConstruction Layer
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess))
-	TWeakObjectPtr <UUserWidget> Layer_Pawn;
+	TObjectPtr <UUserWidget> Layer_Pawn;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess))
-	TWeakObjectPtr <UUserWidget> Layer_Info;
+	TObjectPtr <UUserWidget> Layer_Info;
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess))
-	TWeakObjectPtr <UUserWidget> Layer_Menu;
-
-
-
-	virtual void NativeConstruct() override;
-
+	TObjectPtr <UUserWidget> Layer_Menu;
 };

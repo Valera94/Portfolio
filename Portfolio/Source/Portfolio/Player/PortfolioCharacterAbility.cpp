@@ -3,6 +3,7 @@
 
 #include "PortfolioCharacterAbility.h"
 
+#include "BlueprintGameplayTagLibrary.h"
 #include "EnhancedInputComponent.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/AssetManagerSettings.h"
@@ -13,6 +14,7 @@
 #include "Portfolio/GAS/Attribute/Attribute_Health.h"
 #include "Portfolio/GAS/Attribute/Attribute_Mana.h"
 #include "Portfolio/GAS/Attribute/Attribute_Energy.h"
+#include "Portfolio/HUD/UW_MainGame.h"
 #include "ShowDamage/Content/AC_SD_WidgetTextDamage.h"
 
 
@@ -43,9 +45,17 @@ void APortfolioCharacterAbility::PostInitializeComponents()
 
 
 	//Add default ability
-	for(auto i : DefaultAbility)
+	for (auto i : DefaultAbility)
 	{
 		GetAbilitySystemComponent()->GiveAbility(i);
+	}
+
+	//Add default Effect
+	for (auto i : DefaultEffects)
+	{
+		FGameplayEffectContextHandle l_FGameplayEffectContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
+		l_FGameplayEffectContextHandle.AddSourceObject(this);
+		GetAbilitySystemComponent()->MakeOutgoingSpec(i, 1, l_FGameplayEffectContextHandle);
 	}
 
 
@@ -62,25 +72,22 @@ void APortfolioCharacterAbility::SetupPlayerInputComponent(UInputComponent* Play
 
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	// Set up action bindings
-	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) 
+	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-
 		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Space);
-		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Completed, this, &APortfolioCharacterAbility::IA_Space);
 	}
-
+	
 }
 
 void APortfolioCharacterAbility::IA_Space(const FInputActionValue& Value)
 {
+	if (!CanJump()) { return; }
 	bool ActivePressed = Value.Get<bool>();
+	FGameplayTagContainer TagContainer;
+	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Action.Jump")));
 
 	if (ActivePressed)
 	{
-		GetAbilitySystemComponent()->TryActivateAbilityByClass(DefaultAbility[0]);
-	}
-	else
-	{
-		GetAbilitySystemComponent()->TryActivateAbilityByClass(DefaultAbility[0]);
+		GetAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer,true);
 	}
 }

@@ -18,7 +18,7 @@ class SHOWDAMAGE_API UAC_SD_WidgetTextDamage : public UWidgetComponent
 
 public:
 
-	
+
 	UAC_SD_WidgetTextDamage();
 
 	UPROPERTY(Config)
@@ -31,11 +31,14 @@ public:
 	TArray<UUW_ShowDamage_Damage*> ArrWidgetClass;
 
 
-	UFUNCTION(Unreliable,Client)
-	void Client_CreateArrWidgets();
+	void CreateArrWidgets();
 
-	UFUNCTION(Unreliable,Client,BlueprintCallable)
-	void Client_ShowDamageWidget(const int Damage,const FLinearColor LinearColor);
+	/*
+	*	SelectAttribute = 0_Health,1_Mana,2_Energy;
+	*	Damage = >0_intsDamage, <0_ItsHeal;
+	*/
+	UFUNCTION(Client,Reliable)
+	void ShowDamageWidget(const int SelectAttribute, const int Damage);
 
 
 	virtual void BeginPlay() override;

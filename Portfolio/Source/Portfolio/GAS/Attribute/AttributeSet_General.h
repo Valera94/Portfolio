@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "AttributeSet.h"
+#include "Portfolio/HUD/PortfolioHUD.h"
+#include "Portfolio/HUD/Layer/UW_LayerPawn.h"
+#include "ShowDamage/Content/AC_SD_WidgetTextDamage.h"
 #include "AttributeSet_General.generated.h"
 
 class UAC_PortfolioAbilitySystem;
@@ -16,13 +19,6 @@ class UAC_PortfolioAbilitySystem;
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
-
-
-
-
-
-
-
 /**
  *
  */
@@ -32,11 +28,21 @@ class PORTFOLIO_API UAttributeSet_General : public UAttributeSet
 	GENERATED_BODY()
 
 public:
-
-	UAttributeSet_General();
-	UAC_PortfolioAbilitySystem* GetAbilitySystemComponent() const;
+	//UAC_PortfolioAbilitySystem* GetAbilitySystemComponent() const;
 
 
 
 
+	/*
+	*	SelectAttribute = 0_Health,1_Mana,2_Energy;
+	*	Damage = >0_intsDamage, <0_ItsHeal;
+	*	AvatarActor = WhoOwnerThisNotify
+	*/
+	void UWDamageNotify(const int SelectAttribute, const int Damage, const AActor* AvatarActor);
+
+
+	//Save Current Percent Health To Max Health After Update Max Health
+	void AdjustAttributeForMaxChange(FGameplayAttributeData& AffectedAttribute,
+	                                 const FGameplayAttributeData& MaxAttribute,
+	                                 float NewMaxValue, const FGameplayAttribute& AffectedAttributeProperty);
 };
