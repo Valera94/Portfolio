@@ -85,12 +85,6 @@ void AAI_PortfolioChar::AddEffect(TSubclassOf<UBaseGameplayEffect> Effect)
 
 		FGameplayEffectSpecHandle EffectSpecHandle = PortfolioAbilitySystemComponent->MakeOutgoingSpec(Effect->StaticClass(), 1, EffectContext);
 
-		if (EffectSpecHandle.IsValid())
-		{
-			FName Id = EffectRef.GetDefaultObject()->EffectId;
-			FActiveGameplayEffectHandle EffectHandle = PortfolioAbilitySystemComponent->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data.Get());
-			Effects.Add(FEffectKeyPair(Id, EffectHandle));
-		}
 	}
 }
 
@@ -109,7 +103,6 @@ void AAI_PortfolioChar::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(AAI_PortfolioChar, Effects);
 }
 
 // Called every frame

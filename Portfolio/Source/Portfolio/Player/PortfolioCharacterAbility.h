@@ -29,17 +29,14 @@ protected:
 
 public:
 	APortfolioCharacterAbility();
-
-	virtual void PostInitializeComponents() override;
-	virtual void BeginPlay() override;
-
+	
+	virtual void PossessedBy(AController* NewController) override;
 protected:
 
 	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GAS", meta = (AllowPrivateAccess))
 	TObjectPtr<UAbilitySystemComponent> PortfolioAbilitySystemComponent;
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
-
 
 	/* ----------------------------------------------------------------------------------------------------------------------
 	 *
@@ -48,10 +45,6 @@ protected:
 	 * attributes and effects can be completely different.
 	 *
 	 * ---------------------------------------------------------------------------------------------------------------------- */
-
-
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS", meta = (AllowPrivateAccess))
-	TArray<FBindInput> BindInputWithTag;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly,  Category = "GAS", meta = (AllowPrivateAccess))
 	TArray<TSubclassOf<UGameplayEffect>> DefaultEffects;
@@ -68,16 +61,10 @@ public:
 	TObjectPtr<const class UAttribute_Energy> Energy;
 
 public:
-
-
-	/* ----------------------------------------------------------------------------------------------------------------------
-	 * Input Bind
-	 * ---------------------------------------------------------------------------------------------------------------------- */
+	void IA_Pressed(const FInputActionValue& Value,const FName NameTag);
 	
-	void IA_Space(const FInputActionValue& Value);
-
-
 public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return PortfolioAbilitySystemComponent; }
+
 
 };

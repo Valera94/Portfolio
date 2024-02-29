@@ -13,13 +13,3 @@ void UGeneral_ProgressBar::NativeConstruct()
 	Super::NativeConstruct();
 	
 }
-
-void UGeneral_ProgressBar::OnChangedAttribute(EAttributeInformation AttributeInformationChanged, float CurrentAttributeValue, float MaxAttributeValue)
-{
-	if(AttributeInformationChanged == AttributeInformation)
-	{
-		CurrentAttribute = CurrentAttributeValue;
-		MaxAttribute = MaxAttributeValue;
-		CalculateAndChangePercent();
-	}
-}

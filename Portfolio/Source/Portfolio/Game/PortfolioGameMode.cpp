@@ -7,11 +7,12 @@
 
 APortfolioGameMode::APortfolioGameMode()
 {
-
+	
 }
 
 void APortfolioGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
+
 }
 

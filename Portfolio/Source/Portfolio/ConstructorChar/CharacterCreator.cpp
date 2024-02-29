@@ -85,6 +85,41 @@ void ACharacterCreator::CreateUW()
 
 }
 
+void ACharacterCreator::ConstructorCharacter()
+{
+	UAC_PortfolioAbilitySystem* L_CompAbility = Cast<UAC_PortfolioAbilitySystem>(Cast<APortfolioCharacterAbility>(CharacterForBackView)->GetAbilitySystemComponent());
+	FGameplayTagContainer TagContainer;
+
+	if (TagClass.GetTagName() == FName("Ability.CharacterConstructor.Class.Mage"))
+	{
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Class.Mage")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.TypeOfArmor.Cloth")));
+
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Energy")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Health")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Mana")));
+
+	}
+	else if (TagClass.GetTagName() == FName("Ability.CharacterConstructor.Class.Rogue"))
+	{
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Class.Mage")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.TypeOfArmor.Cloth")));
+
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Energy")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Health")));
+	}
+	else if (TagClass.GetTagName() == FName("Ability.CharacterConstructor.Class.Warrior"))
+	{
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Class.Mage")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.TypeOfArmor.Cloth")));
+
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Energy")));
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Health")));
+	}
+
+	L_CompAbility->AddLooseGameplayTags(TagContainer, 1);
+}
+
 void ACharacterCreator::GetDataTableRow(const int32 IndexSelect)
 {
 	RowDataTable = *Cast<UDataTable>(DataTableAsset)->FindRow<FDataTableCharacterCreator>(
@@ -157,6 +192,7 @@ bool ACharacterCreator::FChangeClass(const int32 IndexSelect)
 	{
 		UUW_CharacterCreator* L_UW_CharacterCreator = Cast<UUW_CharacterCreator>(WidgetWithInterface);
 		if (L_UW_CharacterCreator != nullptr) { L_UW_CharacterCreator->FChangeText(0, RowDataTable.struct_Class[IndexSelect].TextInfo.TopText, RowDataTable.struct_Class[IndexSelect].TextInfo.InfoText); }
+		TagClass = RowDataTable.struct_Class[IndexSelect].TextInfo.GameplayTag;
 	}
 
 	return false;
@@ -165,7 +201,7 @@ bool ACharacterCreator::FChangeClass(const int32 IndexSelect)
 bool ACharacterCreator::FClickComplete()
 {
 	if (CharacterForBackView==nullptr && SkeletalMeshComponent==nullptr) { return false; }
-
+	ConstructorCharacter(); // Add needed Tag
 	//Cast<APortfolioCharacter>(CharacterForBackView)->Server_ChangeSkeletalMesh_Implementation(SkeletalMeshComponent->GetSkeletalMeshAsset());
 	GetNetOwningPlayer()->GetPlayerController(GetWorld())->SetViewTargetWithBlend(Cast<AActor>(CharacterForBackView));
 	//Cast<APortfolioCharacter>(CharacterForBackView)->Server_ChangeMesh(SkeletalMeshComponent->SkeletalMesh);   Old

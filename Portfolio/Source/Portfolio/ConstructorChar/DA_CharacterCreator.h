@@ -6,6 +6,7 @@
 #include "Animation/AnimBlueprint.h"
 #include "DataContainer_CharacterCreator.h"
 #include "Engine/StreamableManager.h"
+#include "GameplayTagContainer.h"
 #include "DA_CharacterCreator.generated.h"
 
 /**
@@ -21,6 +22,9 @@ struct FTextInfo
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI|BlockInfoCharacter")
 	FString InfoText;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI|BlockInfoCharacter",Meta = (GameplayTagFilter="Ability.CharacterConstructor"))
+	FGameplayTag GameplayTag;
 };
 
 USTRUCT(BlueprintType)

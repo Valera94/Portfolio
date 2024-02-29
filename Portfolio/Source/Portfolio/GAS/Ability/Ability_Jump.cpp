@@ -11,12 +11,14 @@ UAbility_Jump::UAbility_Jump(const FObjectInitializer& ObjectInitializer)
 {
 	InstancingPolicy = EGameplayAbilityInstancingPolicy::InstancedPerActor;
 	NetExecutionPolicy = EGameplayAbilityNetExecutionPolicy::LocalPredicted;
+	
 }
 
 bool UAbility_Jump::CanActivateAbility(const FGameplayAbilitySpecHandle Handle,
                                        const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags,
                                        const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const
 {
+	if (!Cast<ACharacter>(ActorInfo->AvatarActor)->CanJump()) { return false; }
 	if (!ActorInfo || !ActorInfo->AvatarActor.IsValid()) { return false; }
 	if (!Super::CanActivateAbility(Handle, ActorInfo, SourceTags, TargetTags, OptionalRelevantTags)) { return false; }
 	return true;
@@ -37,6 +39,7 @@ void UAbility_Jump::ActivateAbility(const FGameplayAbilitySpecHandle Handle, con
 	if (IsActive()) { CancelAbility(Handle, ActorInfo, ActivationInfo, true); }
 	Cast<ACharacter>(ActorInfo->AvatarActor)->UnCrouch();
 	Cast<ACharacter>(ActorInfo->AvatarActor)->Jump();
+
 }
 
 void UAbility_Jump::EndAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo,

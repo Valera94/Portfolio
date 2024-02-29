@@ -2,11 +2,9 @@
 
 
 #include "AC_PortfolioAbilitySystem.h"
-#include "Portfolio/Player/PortfolioCharacterAbility.h"
 
-UAC_PortfolioAbilitySystem::UAC_PortfolioAbilitySystem(const FObjectInitializer& ObjectInitializer)
+void UAC_PortfolioAbilitySystem::BeginPlay()
 {
+	Super::BeginPlay();
 
 }
-
-

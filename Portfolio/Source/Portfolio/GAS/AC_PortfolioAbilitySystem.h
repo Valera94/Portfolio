@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "AbilitySystemComponent.h"
-#include "Portfolio/Player/PortfolioPlayerState.h"
 #include "AC_PortfolioAbilitySystem.generated.h"
 
 class UBaseGameplayEffect;
@@ -21,8 +20,12 @@ class PORTFOLIO_API UAC_PortfolioAbilitySystem : public UAbilitySystemComponent
 
 protected:
 
-	UAC_PortfolioAbilitySystem(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	//FORCEINLINE APortfolioPlayerState* GetPlayerState() const { return Cast<APortfolioPlayerState>(AbilityActorInfo.Get()->PlayerController->PlayerState); }
 
-	FORCEINLINE APortfolioPlayerState* GetPlayerState() const { return Cast<APortfolioPlayerState>(AbilityActorInfo.Get()->PlayerController->PlayerState); }
+public:
 
+	virtual void BeginPlay() override;
+
+	UPROPERTY(BlueprintReadOnly,Category="Custom|InformationSpawn")
+	TArray<TObjectPtr<UAttributeSet_General>>ArrAttribute;
 };

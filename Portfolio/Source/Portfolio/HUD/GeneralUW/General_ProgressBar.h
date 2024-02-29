@@ -5,7 +5,6 @@
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/ProgressBar.h"
-#include "Portfolio/Player/PortfolioPlayerState.h"
 #include "General_ProgressBar.generated.h"
 
 /**
@@ -33,10 +32,5 @@ protected:
 
 	virtual void NativeConstruct() override;
 public:
-	UPROPERTY(BlueprintReadWrite,EditInstanceOnly, meta = (ExposeOnSpawn, AllowPrivateAccess))
-	EAttributeInformation AttributeInformation;
-
-	UFUNCTION(BlueprintCallable, Category = "PlayerState|Delegate")
-	void OnChangedAttribute(EAttributeInformation AttributeInformationChanged, float CurrentAttributeValue, float MaxAttributeValue);
 
 };

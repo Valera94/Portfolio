@@ -2,7 +2,3 @@
 
 
 #include "PortfolioGameplayAbility.h"
-
-UPortfolioGameplayAbility::UPortfolioGameplayAbility()
-{
-}

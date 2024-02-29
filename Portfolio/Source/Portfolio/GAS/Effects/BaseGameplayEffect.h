@@ -10,23 +10,6 @@
  * 
  */
 
-USTRUCT(BlueprintType)
-struct FEffectKeyPair
-{
-	GENERATED_BODY()
-
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	FName Id;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FActiveGameplayEffectHandle EffectHandle;
-
-	FEffectKeyPair();
-
-	FEffectKeyPair(FName Id, FActiveGameplayEffectHandle Handle);
-
-};
-
 
 UCLASS()
 class PORTFOLIO_API UBaseGameplayEffect : public UGameplayEffect
@@ -34,10 +17,5 @@ class PORTFOLIO_API UBaseGameplayEffect : public UGameplayEffect
 	GENERATED_BODY()
 
 public:
-
-	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category="Effects")
-	FName EffectId;
-
-
 
 };

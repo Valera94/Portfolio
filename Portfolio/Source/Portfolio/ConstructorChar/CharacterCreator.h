@@ -67,8 +67,12 @@ protected:
 
 public:
 
+	FGameplayTag TagClass;
+
+public:
 
 	void CreateUW();
+	void ConstructorCharacter();
 
 	//Interface IInterfaceCharacterCreator
 	virtual bool FChangeRace(const int32 IndexSelect) override;

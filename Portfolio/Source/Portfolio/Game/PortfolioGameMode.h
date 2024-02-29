@@ -18,7 +18,6 @@ public:
 	TSubclassOf<APawn> DefaultCharacter;
 	
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+
+
 };
-
-
-

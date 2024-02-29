@@ -63,8 +63,6 @@ public:
 	UFUNCTION(Reliable, Server, BlueprintCallable)
 	void ServerAddEffect(TSubclassOf<UBaseGameplayEffect> Effect);
 
-	UPROPERTY(Replicated,BlueprintReadWrite,Category="Gas|Effects")
-	TArray<FEffectKeyPair>Effects;
 
 	virtual void GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const override;
 

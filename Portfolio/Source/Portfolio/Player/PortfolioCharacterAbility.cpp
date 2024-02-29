@@ -3,9 +3,9 @@
 
 #include "PortfolioCharacterAbility.h"
 
+#include "AbilitySystemGlobals.h"
 #include "BlueprintGameplayTagLibrary.h"
 #include "EnhancedInputComponent.h"
-#include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/AssetManagerSettings.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -14,7 +14,7 @@
 #include "Portfolio/GAS/Attribute/Attribute_Health.h"
 #include "Portfolio/GAS/Attribute/Attribute_Mana.h"
 #include "Portfolio/GAS/Attribute/Attribute_Energy.h"
-#include "Portfolio/HUD/UW_MainGame.h"
+
 #include "ShowDamage/Content/AC_SD_WidgetTextDamage.h"
 
 
@@ -36,13 +36,13 @@ APortfolioCharacterAbility::APortfolioCharacterAbility()
 
 }
 
-void APortfolioCharacterAbility::PostInitializeComponents()
+void APortfolioCharacterAbility::PossessedBy(AController* NewController)
 {
-	Super::PostInitializeComponents();
+	Super::PossessedBy(NewController);
 
-	check(GetAbilitySystemComponent());
-	GetAbilitySystemComponent()->InitAbilityActorInfo(this, this);
+	check(PortfolioAbilitySystemComponent)
 
+	GetAbilitySystemComponent()->InitAbilityActorInfo(NewController, this);
 
 	//Add default ability
 	for (auto i : DefaultAbility)
@@ -53,19 +53,9 @@ void APortfolioCharacterAbility::PostInitializeComponents()
 	//Add default Effect
 	for (auto i : DefaultEffects)
 	{
-		FGameplayEffectContextHandle l_FGameplayEffectContextHandle = GetAbilitySystemComponent()->MakeEffectContext();
-		l_FGameplayEffectContextHandle.AddSourceObject(this);
-		GetAbilitySystemComponent()->MakeOutgoingSpec(i, 1, l_FGameplayEffectContextHandle);
+		GetAbilitySystemComponent()->MakeEffectContext().AddSourceObject(this);
 	}
-
-
 }
-
-void APortfolioCharacterAbility::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
 
 void APortfolioCharacterAbility::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
@@ -74,20 +64,19 @@ void APortfolioCharacterAbility::SetupPlayerInputComponent(UInputComponent* Play
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Space);
+		EnhancedInputComponent->BindAction(InputConfigData->InputLeftClickMouse, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Shoot"));
+		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Jump"));
 	}
-	
 }
 
-void APortfolioCharacterAbility::IA_Space(const FInputActionValue& Value)
+void APortfolioCharacterAbility::IA_Pressed(const FInputActionValue& Value,const FName NameTag)
 {
-	if (!CanJump()) { return; }
 	bool ActivePressed = Value.Get<bool>();
-	FGameplayTagContainer TagContainer;
-	TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.Action.Jump")));
 
 	if (ActivePressed)
 	{
-		GetAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer,true);
+		FGameplayTagContainer TagContainer;
+		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(NameTag));
+		GetAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer, true);
 	}
 }

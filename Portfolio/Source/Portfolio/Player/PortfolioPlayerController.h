@@ -17,6 +17,9 @@ class PORTFOLIO_API APortfolioPlayerController : public APlayerController
 
 public:
 	virtual void BeginPlay() override;
+
+	//Press icon ability
 	virtual bool InputKey(const FInputKeyParams& Params) override;
+	//OldPressedKey icon ability
 	FString OldPressKey;
 };

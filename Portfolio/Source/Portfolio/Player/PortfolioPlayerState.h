@@ -11,14 +11,6 @@
  *
  */
 
-UENUM()
-enum class EAttributeInformation :uint8
-{
-	Health,
-	Mana,
-	Energy,
-};
-
 UCLASS()
 class PORTFOLIO_API APortfolioPlayerState : public APlayerState
 {
