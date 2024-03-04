@@ -8,8 +8,10 @@
 #include "EnhancedInputComponent.h"
 #include "Engine/AssetManagerSettings.h"
 #include "Kismet/GameplayStatics.h"
+#include "Net/UnrealNetwork.h"
 
 #include "Portfolio/GAS/AC_PortfolioAbilitySystem.h"
+#include "Portfolio/GAS/Attribute/AttributeSet_Experience.h"
 
 #include "Portfolio/GAS/Attribute/Attribute_Health.h"
 #include "Portfolio/GAS/Attribute/Attribute_Mana.h"
@@ -27,13 +29,13 @@ APortfolioCharacterAbility::APortfolioCharacterAbility()
 	PortfolioAbilitySystemComponent->SetIsReplicated(true);
 	PortfolioAbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
+	
 	Health = CreateDefaultSubobject<UAttribute_Health>("UAttribute_Health");
-	Mana = CreateDefaultSubobject<UAttribute_Mana>("UAttribute_Mana");
-	Energy = CreateDefaultSubobject<UAttribute_Energy>("UAttribute_Energy");
+	Experience = CreateDefaultSubobject<UAttributeSet_Experience>("UAttributeSet_Experience");
 
 	WidgetTextDamage = CreateDefaultSubobject<UAC_SD_WidgetTextDamage>("AC_SD_WidgetTextDamage");
 	WidgetTextDamage->SetupAttachment(RootComponent);
-
+	WidgetTextDamage->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void APortfolioCharacterAbility::PossessedBy(AController* NewController)
@@ -79,4 +81,21 @@ void APortfolioCharacterAbility::IA_Pressed(const FInputActionValue& Value,const
 		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(NameTag));
 		GetAbilitySystemComponent()->TryActivateAbilitiesByTag(TagContainer, true);
 	}
+}
+
+void APortfolioCharacterAbility::OnRep_ViewSkeletalMesh()
+{
+	GetMesh()->SetSkeletalMesh(ViewSkeletalMesh);
+}
+
+void APortfolioCharacterAbility::OnRep_AnimationSkeletalMesh()
+{
+	GetMesh()->SetAnimClass(AnimationSkeletalMesh);
+}
+
+void APortfolioCharacterAbility::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(APortfolioCharacterAbility, ViewSkeletalMesh)
+	DOREPLIFETIME(APortfolioCharacterAbility, AnimationSkeletalMesh)
 }

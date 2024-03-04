@@ -7,11 +7,32 @@
 #include "DataContainer_CharacterCreator.h"
 #include "Engine/StreamableManager.h"
 #include "GameplayTagContainer.h"
+#include "Portfolio/GAS/Attribute/AttributeSet_General.h"
+#include "Portfolio/Player/PortfolioCharacterAbility.h"
 #include "DA_CharacterCreator.generated.h"
 
-/**
- *
- */
+
+//This for GAS information only.
+USTRUCT(BlueprintType)
+struct FStructGAS
+{
+
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TArray<TObjectPtr<UAttributeSet_General>> ArrAttribute;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TArray<TObjectPtr<UBaseGameplayEffect>> ArrEffect;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TArray<TObjectPtr<UPortfolioGameplayAbility>> ArrAbility;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FGameplayTagContainer GameplayTagContainer;
+
+};
+
+//Text for Widget information
 USTRUCT(BlueprintType)
 struct FTextInfo
 {
@@ -23,12 +44,11 @@ struct FTextInfo
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI|BlockInfoCharacter")
 	FString InfoText;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "UI|BlockInfoCharacter",Meta = (GameplayTagFilter="Ability.CharacterConstructor"))
-	FGameplayTag GameplayTag;
 };
 
+//This struct for atlas information
 USTRUCT(BlueprintType)
-struct FStructInfo
+struct FAtlasMaterialCalculate
 {
 	GENERATED_BODY()
 
@@ -40,6 +60,7 @@ struct FStructInfo
 	FTextInfo TextInfo;
 };
 
+//This struct for Information about character view
 USTRUCT(BlueprintType)
 struct FStructGender
 {
@@ -47,7 +68,6 @@ struct FStructGender
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSoftObjectPtr<USkeletalMesh> SkeletalMeshMan;
-
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FTextInfo TextInfoMan;
 
@@ -57,10 +77,44 @@ struct FStructGender
 	FTextInfo TextInfoWomen;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TSoftObjectPtr<UAnimBlueprint>AnimationBlueprint;
+	TSubclassOf<UAnimInstance>AnimationBlueprint;
 };
 
 
+
+
+
+
+
+USTRUCT(BlueprintType)
+struct FStructRace
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSoftObjectPtr<UTexture2D> BackgroundCastleRaceImage;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSubclassOf<AActor> DecorationActor;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FAtlasMaterialCalculate AtlasMaterial;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FStructGAS UniqueRaceSkill;
+};
+
+USTRUCT(BlueprintType)
+struct FStructClass
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSubclassOf<APortfolioCharacterAbility> ClassForSpawnAndPossess;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FAtlasMaterialCalculate AtlasMaterial;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FStructGender UniqueViewForClass;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FStructGAS UniqueClassSkill;
+};
 
 
 USTRUCT(BlueprintType)
@@ -71,19 +125,11 @@ struct FDataTableCharacterCreator :public FTableRowBase
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TEnumAsByte<ERaceType> TypeRace;
 
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TSoftObjectPtr<UTexture2D> BackgroundCastleRaceImage;
-
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "StructInfo")
+	FStructRace struct_Race;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "StructInfo")
-	FStructInfo struct_Race;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "StructInfo")
-	TArray<FStructInfo>struct_Class;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "StructInfo")
-	FStructGender struct_Gender;
-
+	TArray<FStructClass>struct_Class;
 };
 
 

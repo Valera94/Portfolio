@@ -17,7 +17,7 @@ DECLARE_LOG_CATEGORY_EXTERN(Project_CharacterAbility, All, All);
  *
  */
 
-UCLASS(Config = Game)
+UCLASS(Abstract, Config = Game)
 class PORTFOLIO_API APortfolioCharacterAbility : public APortfolioCharacter, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
@@ -48,7 +48,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly,  Category = "GAS", meta = (AllowPrivateAccess))
 	TArray<TSubclassOf<UGameplayEffect>> DefaultEffects;
-
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS", meta = (AllowPrivateAccess))
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbility;
 
@@ -56,9 +55,8 @@ public:
 	UPROPERTY()
 	TObjectPtr<const class UAttribute_Health> Health;
 	UPROPERTY()
-	TObjectPtr<const class UAttribute_Mana> Mana;
-	UPROPERTY()
-	TObjectPtr<const class UAttribute_Energy> Energy;
+	TObjectPtr<const class UAttributeSet_Experience> Experience;
+
 
 public:
 	void IA_Pressed(const FInputActionValue& Value,const FName NameTag);
@@ -67,4 +65,18 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override { return PortfolioAbilitySystemComponent; }
 
 
+
+	UPROPERTY(ReplicatedUsing= OnRep_ViewSkeletalMesh)
+	USkeletalMesh* ViewSkeletalMesh;
+	UFUNCTION()
+	void OnRep_ViewSkeletalMesh();
+
+	UPROPERTY(ReplicatedUsing = OnRep_AnimationSkeletalMesh)
+	TSubclassOf<UAnimInstance> AnimationSkeletalMesh;
+	UFUNCTION()
+	void OnRep_AnimationSkeletalMesh();
+
+
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

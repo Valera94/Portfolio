@@ -16,7 +16,7 @@ struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
 
-UCLASS()
+UCLASS(Abstract)
 class APortfolioCharacter : public ACharacter
 {
 	GENERATED_BODY()

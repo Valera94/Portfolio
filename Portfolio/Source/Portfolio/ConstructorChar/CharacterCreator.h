@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
 #include "DA_CharacterCreator.h"
 #include "InterfaceCharacterCreator.h"
 #include "UW_CharacterCreator.h"
@@ -12,11 +12,34 @@
 
 class UUW_CharacterCreator;
 
+/*
+ *  If we change the Race, then we automatically
+ *  have to change the class and gender related to that race.
+ *
+ *		- Race	->	Change Class And Gender
+ *		- Class	->	Change Gender
+ *
+ */
 
 
+USTRUCT(BlueprintType)
+struct FInformationAboutWidget
+{
+	GENERATED_BODY();
+
+	UPROPERTY()
+	TWeakObjectPtr<UUW_CharacterCreator> UserWidget;
+
+	UPROPERTY()
+	int32 IndexRace = 0;
+	UPROPERTY()
+	int32 IndexClass = 0;
+	UPROPERTY()
+	int32 IndexGender = 0;
+};
 
 UCLASS(Abstract)
-class PORTFOLIO_API ACharacterCreator : public AActor, public IInterfaceCharacterCreator
+class PORTFOLIO_API ACharacterCreator : public APawn, public IInterfaceCharacterCreator
 {
 	GENERATED_BODY()
 
@@ -27,16 +50,20 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void UnPossessed() override;
 public:
 	void GetDataTableRow(const int32 IndexSelect);
 
 
 public:
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings")
+	TSoftClassPtr<UUW_CharacterCreator> UW_ClassCharacterCreator;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Settings", meta = (AllowPrivateAccess))
 	TObjectPtr<UDataTable> DataTableAsset = nullptr;
 	UPROPERTY(BlueprintReadOnly)
 	FDataTableCharacterCreator RowDataTable;
+
 public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings|UI|Visual")
 	TSoftObjectPtr<UMaterialInstance> MaterialInstance_Race;
@@ -44,12 +71,6 @@ public:
 	TSoftObjectPtr<UMaterialInstance> MaterialInstance_Class;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings|UI|Visual")
 	TSoftObjectPtr<UMaterialInstance> MaterialInstance_Gender;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings")
-	TSoftClassPtr<UUW_CharacterCreator> UW_ClassCharacterCreator;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings", meta = (ExposeOnSpawn))
-	TObjectPtr <ACharacter> CharacterForBackView;
 
 protected:
 	//-------------------
@@ -59,20 +80,21 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default", meta = (AllowPrivateAccess))
 	TObjectPtr<USceneComponent> Root;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default", meta = (AllowPrivateAccess))
-	TObjectPtr<USceneComponent> Decoration;
+	TObjectPtr<UChildActorComponent> Decoration;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default", meta = (AllowPrivateAccess))
 	TObjectPtr<USceneCaptureComponent2D> SceneCaptureComponent;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Default", meta = (AllowPrivateAccess))
 	TObjectPtr<USkeletalMeshComponent> SkeletalMeshComponent;
 
-public:
-
-	FGameplayTag TagClass;
-
+	UPROPERTY()
+	FInformationAboutWidget InformationAboutWidget;
 public:
 
 	void CreateUW();
-	void ConstructorCharacter();
+	void RecreateImageClass();
+
+	UFUNCTION(Server,Reliable)
+	void Server_PossessClient(APlayerController* ThisController, TSubclassOf<APortfolioCharacterAbility> Character, const FInformationAboutWidget& SetInformationAboutWidget);
 
 	//Interface IInterfaceCharacterCreator
 	virtual bool FChangeRace(const int32 IndexSelect) override;

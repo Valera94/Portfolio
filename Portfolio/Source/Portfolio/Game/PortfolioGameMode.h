@@ -14,10 +14,4 @@ class APortfolioGameMode : public AGameMode
 public:
 	APortfolioGameMode();
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Classes)
-	TSubclassOf<APawn> DefaultCharacter;
-	
-	virtual void PostLogin(APlayerController* NewPlayer) override;
-
-
 };

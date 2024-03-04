@@ -22,8 +22,8 @@ void UUW_CharacterCreator::AddToVerticalBox_Race(TSoftObjectPtr<UMaterialInstanc
 		//CreateWidget
 		UUW_General_AroundButton* Widget = Cast<UUW_General_AroundButton>(CreateWidget(GetWorld(), AroundButton));
 
-		MaterialInstanceDynamic->SetScalarParameterValue("U_Horizontal_Select", L_DataTableCharacterCreator->struct_Race.ParameterMaterial.X);
-		MaterialInstanceDynamic->SetScalarParameterValue("V_Vertical_Select", L_DataTableCharacterCreator->struct_Race.ParameterMaterial.Y);
+		MaterialInstanceDynamic->SetScalarParameterValue("U_Horizontal_Select", L_DataTableCharacterCreator->struct_Race.AtlasMaterial.ParameterMaterial.X);
+		MaterialInstanceDynamic->SetScalarParameterValue("V_Vertical_Select", L_DataTableCharacterCreator->struct_Race.AtlasMaterial.ParameterMaterial.Y);
 
 		Widget->Image_Button->SetBrushFromSoftMaterial(MaterialInstanceDynamic);
 
@@ -63,8 +63,8 @@ void UUW_CharacterCreator::AddToHorizontalBox_Class(TSoftObjectPtr<UMaterialInst
 		//CreateWidget
 		UUW_General_AroundButton* Widget = Cast<UUW_General_AroundButton>(CreateWidget(GetWorld(), AroundButton));
 
-		MaterialInstanceDynamic->SetScalarParameterValue("U_Horizontal_Select", i.ParameterMaterial.X);
-		MaterialInstanceDynamic->SetScalarParameterValue("V_Vertical_Select", i.ParameterMaterial.Y);
+		MaterialInstanceDynamic->SetScalarParameterValue("U_Horizontal_Select", i.AtlasMaterial.ParameterMaterial.X);
+		MaterialInstanceDynamic->SetScalarParameterValue("V_Vertical_Select", i.AtlasMaterial.ParameterMaterial.Y);
 
 		Widget->Image_Button->SetBrushFromSoftMaterial(MaterialInstanceDynamic);
 		HorizontalBox_Class->AddChild(Widget);
@@ -82,7 +82,7 @@ void UUW_CharacterCreator::SimpleClicked()
 bool UUW_CharacterCreator::FReturnRowDataTable(const FDataTableCharacterCreator& RowDataTable)
 {
 	//SetBrush
-	BackgroundCastleRaceImage->SetBrushFromSoftTexture(RowDataTable.BackgroundCastleRaceImage);
+	BackgroundCastleRaceImage->SetBrushFromSoftTexture(RowDataTable.struct_Race.BackgroundCastleRaceImage);
 
 	return true;
 }
