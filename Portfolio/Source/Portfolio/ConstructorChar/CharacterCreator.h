@@ -65,11 +65,11 @@ public:
 	FDataTableCharacterCreator RowDataTable;
 
 public:
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings|UI|Visual")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UMaterialInstance> MaterialInstance_Race;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings|UI|Visual")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UMaterialInstance> MaterialInstance_Class;
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Settings|UI|Visual")
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TSoftObjectPtr<UMaterialInstance> MaterialInstance_Gender;
 
 protected:
@@ -92,9 +92,10 @@ public:
 
 	void CreateUW();
 	void RecreateImageClass();
+	void AddGASInformation(ACharacter*& SpawnedCharacter, const TArray<FStructAttribute>& SetArrAttribute, const TArray<FStructEffect>& SetArrEffect, const TArray<FStructAbility>& SetArrAbility);
 
 	UFUNCTION(Server,Reliable)
-	void Server_PossessClient(APlayerController* ThisController, TSubclassOf<APortfolioCharacterAbility> Character, const FInformationAboutWidget& SetInformationAboutWidget);
+	void Server_PossessClient(APlayerController* ThisController, const FInformationAboutWidget& SetInformationAboutWidget,const FDataTableCharacterCreator& DataTableCharacter);
 
 	//Interface IInterfaceCharacterCreator
 	virtual bool FChangeRace(const int32 IndexSelect) override;

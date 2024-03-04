@@ -8,27 +8,22 @@
 #include "Engine/StreamableManager.h"
 #include "GameplayTagContainer.h"
 #include "Portfolio/GAS/Attribute/AttributeSet_General.h"
+#include "Portfolio/GAS/Effects/BaseGameplayEffect.h"
 #include "Portfolio/Player/PortfolioCharacterAbility.h"
 #include "DA_CharacterCreator.generated.h"
 
-
-//This for GAS information only.
+//All InstanceMaterial For Used About
 USTRUCT(BlueprintType)
-struct FStructGAS
+struct FStructMaterialGAS
 {
+	GENERATED_BODY();
 
-	GENERATED_BODY()
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TArray<TObjectPtr<UAttributeSet_General>> ArrAttribute;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TArray<TObjectPtr<UBaseGameplayEffect>> ArrEffect;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	TArray<TObjectPtr<UPortfolioGameplayAbility>> ArrAbility;
-
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FGameplayTagContainer GameplayTagContainer;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSoftObjectPtr<UMaterialInstance> MaterialInstance_Attribute;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSoftObjectPtr<UMaterialInstance> MaterialInstance_Ability;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TSoftObjectPtr<UMaterialInstance> MaterialInstance_Effect;
 
 };
 
@@ -54,10 +49,68 @@ struct FAtlasMaterialCalculate
 
 	//U - Horizontal, V - Vertical
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
-	FVector2D ParameterMaterial = FVector2D(0.f,0.f);
+	FVector2D ParameterMaterial = FVector2D(0.f, 0.f);
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FTextInfo TextInfo;
+};
+
+USTRUCT(BlueprintType)
+struct FStructAttribute
+{
+	GENERATED_BODY();
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FAtlasMaterialCalculate MaterialCalculate;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSubclassOf<UAttributeSet_General> Attribute;
+};
+
+USTRUCT(BlueprintType)
+struct FStructEffect
+{
+	GENERATED_BODY();
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FAtlasMaterialCalculate MaterialCalculate;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSubclassOf<UBaseGameplayEffect> Effect;
+};
+
+USTRUCT(BlueprintType)
+struct FStructAbility
+{
+	GENERATED_BODY();
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FAtlasMaterialCalculate MaterialCalculate;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TSubclassOf<UPortfolioGameplayAbility> Ability;
+};
+
+//This for GAS information only.
+USTRUCT(BlueprintType)
+struct FStructGAS
+{
+
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FStructMaterialGAS StructMaterialGAS;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TArray<FStructAttribute> ArrAttribute;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TArray<FStructEffect> ArrEffect;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	TArray<FStructAbility> ArrAbility;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
+	FGameplayTagContainer GameplayTagContainer;
+
+
 };
 
 //This struct for Information about character view
@@ -68,6 +121,7 @@ struct FStructGender
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSoftObjectPtr<USkeletalMesh> SkeletalMeshMan;
+
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	FTextInfo TextInfoMan;
 
@@ -79,12 +133,6 @@ struct FStructGender
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly)
 	TSubclassOf<UAnimInstance>AnimationBlueprint;
 };
-
-
-
-
-
-
 
 USTRUCT(BlueprintType)
 struct FStructRace
@@ -131,13 +179,6 @@ struct FDataTableCharacterCreator :public FTableRowBase
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "StructInfo")
 	TArray<FStructClass>struct_Class;
 };
-
-
-
-
-
-
-
 
 
 UCLASS()

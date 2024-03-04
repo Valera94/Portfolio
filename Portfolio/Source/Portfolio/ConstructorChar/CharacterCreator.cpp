@@ -154,15 +154,19 @@ bool ACharacterCreator::FChangeRace(const int32 IndexSelect)
 	{
 		InformationAboutWidget.IndexRace = IndexSelect;
 		RecreateImageClass();
+
+		Cast<UUW_General_AroundButton>(InformationAboutWidget.UserWidget->HorizontalBox_Class->GetChildAt(0))->BackCallOnClick();
+
+
 	}
 
 	if (RowDataTable.struct_Race.DecorationActor != nullptr)
 	{
-		
+
 		Decoration->SetChildActorClass(RowDataTable.struct_Race.DecorationActor);
 		SceneCaptureComponent->ShowOnlyActors.Add(Decoration->GetChildActor());
 		GEngine->AddOnScreenDebugMessage(-1, 3.f, FColor::Red, *Decoration->GetChildActorClass()->GetName());
-		
+
 	}
 
 	TArray<UUserWidget*> OutWidgets;
@@ -235,40 +239,94 @@ bool ACharacterCreator::FChangeGender(const int32 IndexSelect)
 	return true;
 }
 
-void ACharacterCreator::Server_PossessClient_Implementation(APlayerController* ThisController, TSubclassOf<APortfolioCharacterAbility> Character, const FInformationAboutWidget& SetInformationAboutWidget)
+void ACharacterCreator::Server_PossessClient_Implementation(APlayerController* ThisController, const FInformationAboutWidget& SetInformationAboutWidget, const FDataTableCharacterCreator& DataTableCharacter)
 {
+
 	TArray<AActor*>LSpawnLocation;
 	UGameplayStatics::GetAllActorsOfClass(ThisController->GetWorld(), APlayerStart::StaticClass(), LSpawnLocation);
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.bNoFail = true;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
-	ACharacter* CreatedActor = ThisController->GetWorld()->SpawnActor<ACharacter>(Character, LSpawnLocation[0]->GetActorTransform(), SpawnParameters);
+	ACharacter* CreatedActor = ThisController->GetWorld()->SpawnActor<ACharacter>(DataTableCharacter.struct_Class[InformationAboutWidget.IndexClass].ClassForSpawnAndPossess, LSpawnLocation[0]->GetActorTransform(), SpawnParameters);
 
-	//0 = Mam ; 1 = Woman
-	if(SetInformationAboutWidget.IndexGender==0)
+
+
+
+	//0 = Mam ; 1 = Woman GENDER WITH ANIMATION
+	if (SetInformationAboutWidget.IndexGender == 0)
 	{
-		 Cast<APortfolioCharacterAbility>(CreatedActor)->ViewSkeletalMesh=(RowDataTable.struct_Class[SetInformationAboutWidget.IndexClass].UniqueViewForClass.SkeletalMeshMan.LoadSynchronous());
-		 Cast<APortfolioCharacterAbility>(CreatedActor)->AnimationSkeletalMesh = RowDataTable.struct_Class[SetInformationAboutWidget.IndexClass].UniqueViewForClass.AnimationBlueprint;
+		Cast<APortfolioCharacterAbility>(CreatedActor)->ViewSkeletalMesh = DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueViewForClass.SkeletalMeshMan.LoadSynchronous();
+		Cast<APortfolioCharacterAbility>(CreatedActor)->AnimationSkeletalMesh = DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueViewForClass.AnimationBlueprint;
 
 	}
 	else
 	{
-		Cast<APortfolioCharacterAbility>(CreatedActor)->ViewSkeletalMesh=(RowDataTable.struct_Class[SetInformationAboutWidget.IndexClass].UniqueViewForClass.SkeletalMeshWomen.LoadSynchronous());
+		Cast<APortfolioCharacterAbility>(CreatedActor)->ViewSkeletalMesh = (RowDataTable.struct_Class[SetInformationAboutWidget.IndexClass].UniqueViewForClass.SkeletalMeshWomen.LoadSynchronous());
 		Cast<APortfolioCharacterAbility>(CreatedActor)->AnimationSkeletalMesh = RowDataTable.struct_Class[SetInformationAboutWidget.IndexClass].UniqueViewForClass.AnimationBlueprint;
 	}
 
+	AddGASInformation(
+		CreatedActor,
+		DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueClassSkill.ArrAttribute,
+		DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueClassSkill.ArrEffect,
+		DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueClassSkill.ArrAbility);
+
+	AddGASInformation(
+		CreatedActor,
+		DataTableCharacter.struct_Race.UniqueRaceSkill.ArrAttribute,
+		DataTableCharacter.struct_Race.UniqueRaceSkill.ArrEffect,
+		DataTableCharacter.struct_Race.UniqueRaceSkill.ArrAbility);
 
 	ThisController->Possess(CreatedActor);
 }
 
+void ACharacterCreator::AddGASInformation(ACharacter*& SpawnedCharacter, const TArray<FStructAttribute>& SetArrAttribute, const TArray<FStructEffect>& SetArrEffect, const TArray<FStructAbility>& SetArrAbility)
+{
+
+	if (!SetArrAttribute.IsEmpty())
+	{
+		for (const auto& i : SetArrAttribute)
+		{
+			if (i.Attribute != nullptr)
+			{
+				UAttributeSet* AttributeSet = NewObject<UAttributeSet>(Cast<APortfolioCharacterAbility>(SpawnedCharacter)->GetAbilitySystemComponent()->GetOwnerActor(), i.Attribute);
+				Cast<APortfolioCharacterAbility>(SpawnedCharacter)->GetAbilitySystemComponent()->AddAttributeSetSubobject<UAttributeSet>(AttributeSet);
+			}
+		}
+	}
+
+	if (!SetArrAbility.IsEmpty())
+	{
+		for (const auto& i : SetArrAbility)
+		{
+			if (i.Ability != nullptr)
+			{
+				Cast<APortfolioCharacterAbility>(SpawnedCharacter)->DefaultAbility.Add(i.Ability);
+			}
+		}
+
+	}
+
+	if (!SetArrEffect.IsEmpty())
+	{
+		for (const auto& i : SetArrEffect)
+		{
+			if (i.Effect != nullptr)
+			{
+				Cast<APortfolioCharacterAbility>(SpawnedCharacter)->DefaultEffects.AddUnique(i.Effect);
+			}
+		}
+
+	}
+
+}
 
 bool ACharacterCreator::FClickComplete()
 {
 
 	Server_PossessClient(GetLocalViewingPlayerController(),
-		RowDataTable.struct_Class[InformationAboutWidget.IndexClass].ClassForSpawnAndPossess,
-		InformationAboutWidget);
+		InformationAboutWidget, RowDataTable);
 
 	return false;
 }

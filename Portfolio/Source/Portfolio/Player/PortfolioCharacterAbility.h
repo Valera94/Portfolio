@@ -38,6 +38,8 @@ protected:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+public:
+
 	/* ----------------------------------------------------------------------------------------------------------------------
 	 *
 	 * We use attributes, abilities and effects inside the character,
@@ -46,12 +48,11 @@ protected:
 	 *
 	 * ---------------------------------------------------------------------------------------------------------------------- */
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly,  Category = "GAS", meta = (AllowPrivateAccess))
+	UPROPERTY( BlueprintReadOnly, EditAnywhere,  Category = "GAS", meta = (AllowPrivateAccess))
 	TArray<TSubclassOf<UGameplayEffect>> DefaultEffects;
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "GAS", meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = "GAS", meta = (AllowPrivateAccess))
 	TArray<TSubclassOf<UGameplayAbility>> DefaultAbility;
 
-public:
 	UPROPERTY()
 	TObjectPtr<const class UAttribute_Health> Health;
 	UPROPERTY()
