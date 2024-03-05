@@ -3,18 +3,22 @@
 
 #include "PortfolioPlayerController.h"
 
+#include "PortfolioCharacterAbility.h"
 #include "Blueprint/UserWidget.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
 #include "Engine/AssetManager.h"
 #include "GameFramework/PlayerInput.h"
 #include "Kismet/GameplayStatics.h"
 #include "Portfolio/HUD/AbilityInterface.h"
+#include "Portfolio/HUD/PortfolioHUD.h"
 
 void APortfolioPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
 	PlayerCameraManager->StartCameraFade(1.f, 1.f, 0.f, FLinearColor::Black);
+
+	SetShowMouseCursor(true);
 }
 
 bool APortfolioPlayerController::InputKey(const FInputKeyParams& Params)
@@ -45,4 +49,11 @@ bool APortfolioPlayerController::InputKey(const FInputKeyParams& Params)
 	}
 
 	return Super::InputKey(Params);
+}
+
+void APortfolioPlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+
+
 }

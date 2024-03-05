@@ -92,7 +92,7 @@ public:
 
 	void CreateUW();
 	void RecreateImageClass();
-	void AddGASInformation(ACharacter*& SpawnedCharacter, const TArray<FStructAttribute>& SetArrAttribute, const TArray<FStructEffect>& SetArrEffect, const TArray<FStructAbility>& SetArrAbility);
+	void AddGASInformation(ACharacter*& SpawnedCharacter, const TArray<FStructAttribute>& SetArrAttribute, const TArray<FStructEffect>& SetArrEffect, const TArray<FStructAbility>& SetArrAbility, const FGameplayTagContainer& SetTagContainer);
 
 	UFUNCTION(Server,Reliable)
 	void Server_PossessClient(APlayerController* ThisController, const FInformationAboutWidget& SetInformationAboutWidget,const FDataTableCharacterCreator& DataTableCharacter);

@@ -7,6 +7,7 @@
 #include "BlueprintGameplayTagLibrary.h"
 #include "EnhancedInputComponent.h"
 #include "Engine/AssetManagerSettings.h"
+#include "GameFramework/GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 
@@ -14,8 +15,6 @@
 #include "Portfolio/GAS/Attribute/AttributeSet_Experience.h"
 
 #include "Portfolio/GAS/Attribute/Attribute_Health.h"
-#include "Portfolio/GAS/Attribute/Attribute_Mana.h"
-#include "Portfolio/GAS/Attribute/Attribute_Energy.h"
 
 #include "ShowDamage/Content/AC_SD_WidgetTextDamage.h"
 

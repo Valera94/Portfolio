@@ -67,6 +67,6 @@ void UAttribute_Energy::ChangeEnergy_Implementation(const FVector2D Value)
 
 	for (auto i : UserWidgetArr)
 	{
-		Cast<IHUDInterface>(i)->IHI_ChangeEnergyAttribute(Value);
+		Cast<IHUDInterface>(i)->IHI_ChangeSecondAttribute(Value);
 	}
 }

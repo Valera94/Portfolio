@@ -6,12 +6,6 @@
 #include "Portfolio/GAS/AC_PortfolioAbilitySystem.h"
 
 
-//
-//UAC_PortfolioAbilitySystem* UAttributeSet_General::GetAbilitySystemComponent() const
-//{
-//	return  Cast<UAC_PortfolioAbilitySystem>(GetOwningAbilitySystemComponent());
-//}
-
 void UAttributeSet_General::UWDamageNotify(const int SelectAttribute, const int Damage, const AActor* AvatarActor)
 {
 	Cast<UAC_SD_WidgetTextDamage>(AvatarActor->GetComponentByClass(UAC_SD_WidgetTextDamage::StaticClass()))->ShowDamageWidget(SelectAttribute, Damage);

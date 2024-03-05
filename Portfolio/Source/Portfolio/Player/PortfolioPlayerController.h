@@ -22,4 +22,13 @@ public:
 	virtual bool InputKey(const FInputKeyParams& Params) override;
 	//OldPressedKey icon ability
 	FString OldPressKey;
+	virtual void OnPossess(APawn* InPawn) override;
+
+	/** MappingContext */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputMappingContext> InputMappingContext;
+
+	/** InputConfigData */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UInputConfigData> InputConfigData;
 };

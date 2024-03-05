@@ -10,24 +10,59 @@
 void UUW_LayerPawn::NativeConstruct()
 {
 	Super::NativeConstruct();
-
 	ProgressBarHealth->SetPercent(1);
-	ProgressBarMP->SetPercent(1);
-	ProgressBarEnergy->SetPercent(1);
+	ChangeProgressBarInformationAndLogic();
 }
 
-
-void UUW_LayerPawn::IHI_ChangeEnergyAttribute(FVector2D Value)
+void UUW_LayerPawn::ChangeProgressBarInformationAndLogic()
 {
-	ProgressBarEnergy->SetPercent(Value.Y / Value.X);
+	if (GetOwningPlayerPawn()->StaticClass() == APortfolioCharacterAbility::StaticClass())
+	{
+
+		if (Cast<APortfolioCharacterAbility>(GetOwningPlayerPawn())->GetAbilitySystemComponent()->GetTagCount(FGameplayTag::RequestGameplayTag("Ability.CharacterConstructor.Attribute.Rage")) > 0)
+		{
+			ProgressBarSecond->SetPercent(0);
+			ProgressBarSecond->SetFillColorAndOpacity(FLinearColor(1.f, 0.12f, 0.58f, 1.f));
+		}
+
+		if (Cast<APortfolioCharacterAbility>(GetOwningPlayerPawn())->GetAbilitySystemComponent()->GetTagCount(FGameplayTag::RequestGameplayTag("Ability.CharacterConstructor.Attribute.Mana")) > 0)
+		{
+			ProgressBarSecond->SetPercent(1);
+			ProgressBarSecond->SetFillColorAndOpacity(FLinearColor::Blue);
+		}
+
+		if (Cast<APortfolioCharacterAbility>(GetOwningPlayerPawn())->GetAbilitySystemComponent()->GetTagCount(FGameplayTag::RequestGameplayTag("Ability.CharacterConstructor.Attribute.Energy")) > 0)
+		{
+			ProgressBarSecond->SetPercent(1);
+			ProgressBarSecond->SetFillColorAndOpacity(FLinearColor::Green);
+		}
+	}
+	//
+	//if(GASComponent->TagContainer.HasTag(FGameplayTag::RequestGameplayTag("Ability.CharacterConstructor.Attribute.Rage")))
+	//{
+	//	ProgressBarSecond->SetPercent(0);
+	//	ProgressBarSecond->SetFillColorAndOpacity(FLinearColor(1.f, 0.12f, 0.58f, 1.f));
+	//}
+	//
+	//if (GASComponent->TagContainer.HasTag(FGameplayTag::RequestGameplayTag("Ability.CharacterConstructor.Attribute.Mana")))
+	//{
+	//	ProgressBarSecond->SetPercent(1);
+	//	ProgressBarSecond->SetFillColorAndOpacity(FLinearColor::Blue);
+	//}
+	//
+	//if (GASComponent->TagContainer.HasTag(FGameplayTag::RequestGameplayTag("Ability.CharacterConstructor.Attribute.Energy")))
+	//{
+	//	ProgressBarSecond->SetPercent(1);
+	//	ProgressBarSecond->SetFillColorAndOpacity(FLinearColor::Green);
+	//}
 }
 
-void UUW_LayerPawn::IHI_ChangeManaAttribute(FVector2D Value)
-{
-	ProgressBarMP->SetPercent(Value.Y / Value.X);
-}
-
-void UUW_LayerPawn::IHI_ChangeHealthAttribute(FVector2D Value)
+void UUW_LayerPawn::IHI_ChangeMainAttribute(FVector2D Value)
 {
 	ProgressBarHealth->SetPercent(Value.Y / Value.X);
+}
+
+void UUW_LayerPawn::IHI_ChangeSecondAttribute(FVector2D Value)
+{
+	ProgressBarSecond->SetPercent(Value.Y / Value.X);
 }

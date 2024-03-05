@@ -100,43 +100,6 @@ void ACharacterCreator::RecreateImageClass()
 	InformationAboutWidget.UserWidget->AddToHorizontalBox_Class(MaterialInstance_Class, &RowDataTable);
 }
 
-
-
-//void ACharacterCreator::ConstructorCharacter()
-//{
-//	UAC_PortfolioAbilitySystem* L_CompAbility = Cast<UAC_PortfolioAbilitySystem>(Cast<APortfolioCharacterAbility>(CharacterForBackView)->GetAbilitySystemComponent());
-//	FGameplayTagContainer TagContainer;
-//
-//	if (TagClass.GetTagName() == FName("Ability.CharacterConstructor.Class.Mage"))
-//	{
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Class.Mage")));
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.TypeOfArmor.Cloth")));
-//
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Energy")));
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Health")));
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Mana")));
-//
-//	}
-//	else if (TagClass.GetTagName() == FName("Ability.CharacterConstructor.Class.Rogue"))
-//	{
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Class.Mage")));
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.TypeOfArmor.Cloth")));
-//
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Energy")));
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Health")));
-//	}
-//	else if (TagClass.GetTagName() == FName("Ability.CharacterConstructor.Class.Warrior"))
-//	{
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Class.Mage")));
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.TypeOfArmor.Cloth")));
-//
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Energy")));
-//		TagContainer.AddTag(FGameplayTag::RequestGameplayTag(FName("Ability.CharacterConstructor.Attribute.Health")));
-//	}
-//
-//	L_CompAbility->AddLooseGameplayTags(TagContainer, 1);
-//}
-
 void ACharacterCreator::GetDataTableRow(const int32 IndexSelect)
 {
 	RowDataTable = *Cast<UDataTable>(DataTableAsset)->FindRow<FDataTableCharacterCreator>(
@@ -270,18 +233,20 @@ void ACharacterCreator::Server_PossessClient_Implementation(APlayerController* T
 		CreatedActor,
 		DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueClassSkill.ArrAttribute,
 		DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueClassSkill.ArrEffect,
-		DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueClassSkill.ArrAbility);
+		DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueClassSkill.ArrAbility,
+		DataTableCharacter.struct_Class[SetInformationAboutWidget.IndexClass].UniqueClassSkill.GameplayTagContainer);
 
 	AddGASInformation(
 		CreatedActor,
 		DataTableCharacter.struct_Race.UniqueRaceSkill.ArrAttribute,
 		DataTableCharacter.struct_Race.UniqueRaceSkill.ArrEffect,
-		DataTableCharacter.struct_Race.UniqueRaceSkill.ArrAbility);
+		DataTableCharacter.struct_Race.UniqueRaceSkill.ArrAbility,
+		DataTableCharacter.struct_Race.UniqueRaceSkill.GameplayTagContainer);
 
 	ThisController->Possess(CreatedActor);
 }
 
-void ACharacterCreator::AddGASInformation(ACharacter*& SpawnedCharacter, const TArray<FStructAttribute>& SetArrAttribute, const TArray<FStructEffect>& SetArrEffect, const TArray<FStructAbility>& SetArrAbility)
+void ACharacterCreator::AddGASInformation(ACharacter*& SpawnedCharacter, const TArray<FStructAttribute>& SetArrAttribute, const TArray<FStructEffect>& SetArrEffect, const TArray<FStructAbility>& SetArrAbility, const FGameplayTagContainer& SetTagContainer)
 {
 
 	if (!SetArrAttribute.IsEmpty())
@@ -320,6 +285,10 @@ void ACharacterCreator::AddGASInformation(ACharacter*& SpawnedCharacter, const T
 
 	}
 
+	if (!SetTagContainer.IsEmpty())
+	{
+		Cast<APortfolioCharacterAbility>(SpawnedCharacter)->GetAbilitySystemComponent()->AddReplicatedLooseGameplayTags(SetTagContainer);
+	}
 }
 
 bool ACharacterCreator::FClickComplete()

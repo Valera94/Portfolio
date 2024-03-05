@@ -3,8 +3,6 @@
 
 #include "UW_MainGame.h"
 
-#include "Components/CanvasPanelSlot.h"
-
 
 void UUW_MainGame::ChangeLayerPawn(UUserWidget* UserWidget)
 {
@@ -12,6 +10,16 @@ void UUW_MainGame::ChangeLayerPawn(UUserWidget* UserWidget)
 	ChangeWidgetLayerToOther(ELayer::Layer_Pawn, UserWidget);
 }
 
+void UUW_MainGame::NativeConstruct()
+{
+	Super::NativeConstruct();
+
+	if(CharacterAbility==nullptr)
+	{
+		SetVisibility(ESlateVisibility::Collapsed);
+	}
+	
+}
 
 
 void UUW_MainGame::ChangeWidgetLayerToOther(const ELayer SelectLayerChange, UUserWidget* ChangeToNewWidget)

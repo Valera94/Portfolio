@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "UW_MainGame.h"
 #include "GameFramework/HUD.h"
 #include "Layer/UW_LayerPawn.h"
 #include "PortfolioHUD.generated.h"
@@ -22,11 +23,13 @@ class PORTFOLIO_API APortfolioHUD : public AHUD
 public:
 
 	//Main Game Widget
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Instanced, Category = "Layer", meta = (AllowPrivateAccess))
-	TObjectPtr<class UUW_MainGame> MainGameWidget;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly,Instanced, Category = "Layer", meta = (AllowPrivateAccess))
+	TObjectPtr<UUW_MainGame> MainGameWidget;
 
 	virtual void BeginPlay() override;
 
-	virtual bool AddMainHeroWidget();
+	UFUNCTION()
+	void BindDelegatePossessed(APawn* OldPawn, APawn* NewPawn);
+
 
 };

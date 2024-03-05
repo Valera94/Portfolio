@@ -70,6 +70,6 @@ void UAttribute_Health::ChangeHealth_Implementation(const FVector2D Value)
 
 	for (auto i : UserWidgetArr)
 	{
-		Cast<IHUDInterface>(i)->IHI_ChangeHealthAttribute(Value);
+		Cast<IHUDInterface>(i)->IHI_ChangeMainAttribute(Value);
 	}
 }

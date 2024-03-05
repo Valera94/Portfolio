@@ -24,9 +24,7 @@ class PORTFOLIO_API IHUDInterface
 public:
 
 	//X-MaxValue,Y-CurrentValue;
-	virtual void IHI_ChangeEnergyAttribute(FVector2D Value) { ; }
+	virtual void IHI_ChangeMainAttribute(FVector2D Value) { ; }
 	//X-MaxValue,Y-CurrentValue;
-	virtual void IHI_ChangeHealthAttribute(FVector2D Value) { ; }
-	//X-MaxValue,Y-CurrentValue;
-	virtual void IHI_ChangeManaAttribute(FVector2D Value) { ; }
+	virtual void IHI_ChangeSecondAttribute(FVector2D Value) { ; }
 };

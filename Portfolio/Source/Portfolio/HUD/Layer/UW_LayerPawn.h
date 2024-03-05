@@ -21,23 +21,19 @@ class PORTFOLIO_API UUW_LayerPawn : public UUserWidget, public IHUDInterface
 
 	virtual void NativeConstruct() override;
 
-	
+	void ChangeProgressBarInformationAndLogic();
 
 public:
 	
 	UPROPERTY(BlueprintReadOnly, Category = "ContainerUW", meta = (BindWidget))
 	TObjectPtr< UVerticalBox >VerticalBoxAttribute;
-
 	UPROPERTY(BlueprintReadOnly, Category = "Inforamtion", meta = (BindWidget))
 	TObjectPtr<UProgressBar >ProgressBarHealth;
 	UPROPERTY(BlueprintReadOnly, Category = "Inforamtion", meta = (BindWidget))
-	TObjectPtr<UProgressBar >ProgressBarMP;
-	UPROPERTY(BlueprintReadOnly, Category = "Inforamtion", meta = (BindWidget))
-	TObjectPtr<UProgressBar >ProgressBarEnergy;
+	TObjectPtr<UProgressBar >ProgressBarSecond;
 
-	virtual void IHI_ChangeEnergyAttribute(FVector2D Value) override;
-	virtual void IHI_ChangeManaAttribute(FVector2D Value) override;
-	virtual void IHI_ChangeHealthAttribute(FVector2D Value) override;
 
+	virtual void IHI_ChangeMainAttribute(FVector2D Value) override;
+	virtual void IHI_ChangeSecondAttribute(FVector2D Value) override;
 
 };

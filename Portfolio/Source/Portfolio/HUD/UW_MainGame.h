@@ -3,9 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "HUDInterface.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/Overlay.h"
+#include "Portfolio/Player/PortfolioCharacterAbility.h"
 #include "UW_MainGame.generated.h"
 
 class UCanvasPanel;
@@ -22,7 +22,7 @@ enum ELayer
  *
  */
 UCLASS()
-class PORTFOLIO_API UUW_MainGame : public UUserWidget, public IHUDInterface
+class PORTFOLIO_API UUW_MainGame : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -37,17 +37,25 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "PortfolioHUD")
 	void ChangeLayerPawn(UUserWidget* UserWidget);
 
+	virtual void NativeConstruct() override;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UOverlay* OverlayCanvas;
 
 public:
+
+	UPROPERTY(BlueprintReadOnly,meta = (ExposeOnSpawn))
+	TObjectPtr<APortfolioCharacterAbility>CharacterAbility;
+
+public:
+
 	//NeedConstruction Layer
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadWrite, Instanced, EditDefaultsOnly, meta = (AllowPrivateAccess))
 	TObjectPtr <UUserWidget> Layer_Pawn;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadWrite, Instanced, EditDefaultsOnly, meta = (AllowPrivateAccess))
 	TObjectPtr <UUserWidget> Layer_Info;
-	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, meta = (AllowPrivateAccess))
+	UPROPERTY(BlueprintReadWrite, Instanced, EditDefaultsOnly, meta = (AllowPrivateAccess))
 	TObjectPtr <UUserWidget> Layer_Menu;
 };

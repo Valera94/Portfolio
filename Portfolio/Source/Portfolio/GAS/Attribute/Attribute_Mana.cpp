@@ -65,6 +65,6 @@ void UAttribute_Mana::ChangeMana_Implementation(FVector2D Value)
 
 	for (auto i : UserWidgetArr)
 	{
-		Cast<IHUDInterface>(i)->IHI_ChangeManaAttribute(Value);
+		Cast<IHUDInterface>(i)->IHI_ChangeSecondAttribute(Value);
 	}
 }
