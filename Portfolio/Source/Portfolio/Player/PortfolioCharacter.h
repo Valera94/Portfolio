@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PortfolioPlayerController.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "Portfolio/Input/InputConfigData.h"
@@ -39,19 +40,17 @@ public:
 
 protected:
 
-	/** MappingContext */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputMappingContext> InputMappingContext;
 
-	/** InputConfigData */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Input, meta = (AllowPrivateAccess = "true"))
-	TObjectPtr<UInputConfigData> InputConfigData;
+	UPROPERTY(BlueprintReadOnly)
+	APortfolioPlayerController* PortfolioPlayerController;
 
 	/** Called for movement input */
 	void MoveWASD(const FInputActionValue& Value);
 
 	/** Called for looking input */
 	void Look(const FInputActionValue& Value);
+
+	void IA_RightClick(const FInputActionValue& Value);
 
 #pragma endregion
 
@@ -67,7 +66,10 @@ public:
 protected:
 	// APawn interface
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+	virtual void BeginPlay() override;
+
+	virtual void PossessedBy(AController* NewController) override;
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }

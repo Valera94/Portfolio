@@ -65,8 +65,8 @@ void APortfolioCharacterAbility::SetupPlayerInputComponent(UInputComponent* Play
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(InputConfigData->InputLeftClickMouse, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Shoot"));
-		EnhancedInputComponent->BindAction(InputConfigData->InputSpace, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Jump"));
+		EnhancedInputComponent->BindAction(PortfolioPlayerController->InputConfigData->InputLeftClickMouse, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Shoot"));
+		EnhancedInputComponent->BindAction(PortfolioPlayerController->InputConfigData->InputSpace, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Jump"));
 	}
 }
 

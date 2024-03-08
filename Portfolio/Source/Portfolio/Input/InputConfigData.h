@@ -28,7 +28,6 @@ enum class EWhatWasPressed : uint8
 	WWP_QClick UMETA(DisplayName = "QClick "),
 	WWP_EClick UMETA(DisplayName = "EClick "),
 	WWP_InputSpace UMETA(DisplayName = "InputSpace "),
-	WWP_TurnMouse UMETA(DisplayName = "TurnMouse "),
 
 };
 
@@ -61,7 +60,6 @@ public:
 		{EWhatWasPressed::WWP_QClick, EClickStatus::CS_UnPressed},
 		{EWhatWasPressed::WWP_EClick, EClickStatus::CS_UnPressed},
 		{EWhatWasPressed::WWP_InputSpace, EClickStatus::CS_UnPressed},
-		{EWhatWasPressed::WWP_TurnMouse, EClickStatus::CS_UnPressed},
 	};
 
 

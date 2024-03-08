@@ -18,6 +18,8 @@ void APortfolioPlayerController::BeginPlay()
 
 	PlayerCameraManager->StartCameraFade(1.f, 1.f, 0.f, FLinearColor::Black);
 
+	UWidgetBlueprintLibrary::SetInputMode_GameAndUIEx(this);
+
 	SetShowMouseCursor(true);
 }
 

@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "PortfolioPlayerController.generated.h"
 
+class UInputConfigData;
+class UInputMappingContext;
 /**
  * 
  */

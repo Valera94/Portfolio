@@ -10,9 +10,11 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
+#include "PortfolioPlayerController.h"
 #include "Engine/AssetManager.h"
 #include "Engine/StreamableManager.h"
 #include "GameFramework/GameModeBase.h"
+#include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -77,28 +79,45 @@ void APortfolioCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	check(InputMappingContext)
 
 		//Add Input Mapping Context
 		if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 		{
 			if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 			{
-				Subsystem->AddMappingContext(InputMappingContext, 0);
+				Subsystem->AddMappingContext(PortfolioPlayerController->InputMappingContext, 0);
 			}
 		}
+		//UGameUserSettings::GetNativePropertyValues()
+		//UGameUserSettings::GetProjectUserConfigFilename()
+		//UGameUserSettings* GameUserSettings = UGameUserSettings::GetGameUserSettings();
 
 
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent)) {
 
 		// Moving
-		EnhancedInputComponent->BindAction(InputConfigData->InputMoveWASD, ETriggerEvent::Triggered, this, &APortfolioCharacter::MoveWASD);
+		EnhancedInputComponent->BindAction(PortfolioPlayerController->InputConfigData->InputMoveWASD, ETriggerEvent::Triggered, this, &APortfolioCharacter::MoveWASD);
 
 		// Looking
-		EnhancedInputComponent->BindAction(InputConfigData->TurnMouse, ETriggerEvent::Triggered, this, &APortfolioCharacter::Look);
+		EnhancedInputComponent->BindAction(PortfolioPlayerController->InputConfigData->TurnMouse, ETriggerEvent::Triggered, this, &APortfolioCharacter::Look);
+
+		EnhancedInputComponent->BindAction(PortfolioPlayerController->InputConfigData->InputRightClickMouse, ETriggerEvent::Started, this, &APortfolioCharacter::IA_RightClick);
+		EnhancedInputComponent->BindAction(PortfolioPlayerController->InputConfigData->InputRightClickMouse, ETriggerEvent::Completed, this, &APortfolioCharacter::IA_RightClick);
 	}
 
+}
+
+void APortfolioCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+
+}
+
+void APortfolioCharacter::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+	PortfolioPlayerController = Cast<APortfolioPlayerController>(NewController);
 }
 
 
@@ -112,17 +131,17 @@ void APortfolioCharacter::MoveWASD(const FInputActionValue& Value)
 		if (MovementVector != FVector2D::Zero())
 		{
 			//ChangeStatusInput
-			InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_WASDClick, EClickStatus::CS_Pressed);
+			PortfolioPlayerController->InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_WASDClick, EClickStatus::CS_Pressed);
 
 			// find out which way is forward
 			const FRotator Rotation = Controller->GetControlRotation();
 			const FRotator YawRotation(0, Rotation.Yaw, 0);
 
 			// get forward vector
-			const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X) * InputConfigData->MultiplyScaleLookAxis;
+			const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X) * PortfolioPlayerController->InputConfigData->MultiplyScaleLookAxis;
 
 			// get right vector 
-			const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y) * InputConfigData->MultiplyScaleLookAxis;
+			const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y) * PortfolioPlayerController->InputConfigData->MultiplyScaleLookAxis;
 
 			// add movement 
 			AddMovementInput(ForwardDirection, MovementVector.Y);
@@ -131,7 +150,7 @@ void APortfolioCharacter::MoveWASD(const FInputActionValue& Value)
 		else
 		{
 			//ChangeStatusInput
-			InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_WASDClick, EClickStatus::CS_UnPressed);
+			PortfolioPlayerController->InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_WASDClick, EClickStatus::CS_UnPressed);
 		}
 	}
 }
@@ -147,16 +166,37 @@ void APortfolioCharacter::Look(const FInputActionValue& Value)
 		{
 
 			//ChangeStatusInput
-			InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_TurnMouse, EClickStatus::CS_Pressed);
 
 			// add yaw and pitch input to controller
-			AddControllerYawInput(LookAxisVector.X * InputConfigData->MultiplyScaleLookAxis);
-			AddControllerPitchInput(LookAxisVector.Y * InputConfigData->MultiplyScaleLookAxis * -1);
+			AddControllerYawInput(LookAxisVector.X * PortfolioPlayerController->InputConfigData->MultiplyScaleLookAxis);
+			AddControllerPitchInput(LookAxisVector.Y * PortfolioPlayerController->InputConfigData->MultiplyScaleLookAxis * -1);
 		}
 		else
 		{
 			//ChangeStatusInput
-			InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_TurnMouse, EClickStatus::CS_UnPressed);
+		}
+	}
+}
+
+void APortfolioCharacter::IA_RightClick(const FInputActionValue& Value)
+{
+	if (Controller != nullptr)
+	{
+
+		bool L_IsPressed = Value.Get<bool>();
+
+		if (L_IsPressed)
+		{
+			GetCharacterMovement()->bOrientRotationToMovement = false;
+			bUseControllerRotationYaw = true;
+			PortfolioPlayerController->InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_RightClick, EClickStatus::CS_Pressed);
+
+		}
+		else
+		{
+			GetCharacterMovement()->bOrientRotationToMovement = true;
+			bUseControllerRotationYaw = false;
+			PortfolioPlayerController->InputConfigData->ChangeStatusInput(EWhatWasPressed::WWP_RightClick, EClickStatus::CS_UnPressed);
 		}
 	}
 }
