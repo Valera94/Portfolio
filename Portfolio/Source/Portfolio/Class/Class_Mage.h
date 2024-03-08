@@ -16,6 +16,7 @@ public:
 	// Sets default values for this character's properties
 	AClass_Mage();
 
+	virtual void PossessedBy(AController* NewController) override;
 	UPROPERTY()
 	TObjectPtr<const class UAttribute_Mana> Mana;
 };

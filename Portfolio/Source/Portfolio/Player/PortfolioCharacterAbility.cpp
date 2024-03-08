@@ -28,7 +28,7 @@ APortfolioCharacterAbility::APortfolioCharacterAbility()
 	PortfolioAbilitySystemComponent->SetIsReplicated(true);
 	PortfolioAbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
 
-	
+
 	Health = CreateDefaultSubobject<UAttribute_Health>("UAttribute_Health");
 	Experience = CreateDefaultSubobject<UAttributeSet_Experience>("UAttributeSet_Experience");
 
@@ -43,7 +43,7 @@ void APortfolioCharacterAbility::PossessedBy(AController* NewController)
 
 	check(PortfolioAbilitySystemComponent)
 
-	GetAbilitySystemComponent()->InitAbilityActorInfo(NewController, this);
+		GetAbilitySystemComponent()->InitAbilityActorInfo(NewController, this);
 
 	//Add default ability
 	for (auto i : DefaultAbility)
@@ -56,21 +56,26 @@ void APortfolioCharacterAbility::PossessedBy(AController* NewController)
 	{
 		GetAbilitySystemComponent()->MakeEffectContext().AddSourceObject(this);
 	}
+
+
 }
 
 void APortfolioCharacterAbility::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 
+
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		EnhancedInputComponent->BindAction(PortfolioPlayerController->InputConfigData->InputLeftClickMouse, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Shoot"));
-		EnhancedInputComponent->BindAction(PortfolioPlayerController->InputConfigData->InputSpace, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Jump"));
+		EnhancedInputComponent->BindAction(Cast<APortfolioPlayerController>(GetController())->InputConfigData->InputLeftClickMouse, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Shoot"));
+		EnhancedInputComponent->BindAction(Cast<APortfolioPlayerController>(GetController())->InputConfigData->InputSpace, ETriggerEvent::Started, this, &APortfolioCharacterAbility::IA_Pressed, FName("Ability.Action.Jump"));
 	}
 }
 
-void APortfolioCharacterAbility::IA_Pressed(const FInputActionValue& Value,const FName NameTag)
+void APortfolioCharacterAbility::IA_Pressed(const FInputActionValue& Value, const FName NameTag)
 {
 	bool ActivePressed = Value.Get<bool>();
 
@@ -96,5 +101,5 @@ void APortfolioCharacterAbility::GetLifetimeReplicatedProps(TArray<FLifetimeProp
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(APortfolioCharacterAbility, ViewSkeletalMesh)
-	DOREPLIFETIME(APortfolioCharacterAbility, AnimationSkeletalMesh)
+		DOREPLIFETIME(APortfolioCharacterAbility, AnimationSkeletalMesh)
 }

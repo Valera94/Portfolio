@@ -57,5 +57,8 @@ void APortfolioPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
-
+	if(InPawn->GetClass()==APortfolioCharacterAbility::StaticClass())
+	{
+		
+	}
 }

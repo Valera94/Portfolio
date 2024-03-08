@@ -15,3 +15,8 @@ AClass_Mage::AClass_Mage()
 
 }
 
+void AClass_Mage::PossessedBy(AController* NewController)
+{
+	Super::PossessedBy(NewController);
+}
+

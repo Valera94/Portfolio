@@ -41,9 +41,6 @@ public:
 protected:
 
 
-	UPROPERTY(BlueprintReadOnly)
-	APortfolioPlayerController* PortfolioPlayerController;
-
 	/** Called for movement input */
 	void MoveWASD(const FInputActionValue& Value);
 

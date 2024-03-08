@@ -14,10 +14,10 @@ void APortfolioHUD::BeginPlay()
 
 void APortfolioHUD::BindDelegatePossessed(APawn* OldPawn, APawn* NewPawn)
 {
-	if (Cast<APortfolioCharacterAbility>(NewPawn))
-	{
-		MainGameWidget->AddToViewport();
-		MainGameWidget->SetOwningPlayer(NewPawn->GetLocalViewingPlayerController());
-		MainGameWidget->CharacterAbility = Cast<APortfolioCharacterAbility>(NewPawn);
-	}
+	//if (Cast<APortfolioCharacterAbility>(NewPawn))
+	//{
+	//	MainGameWidget->AddToViewport();
+	//	MainGameWidget->SetOwningPlayer(NewPawn->GetLocalViewingPlayerController());
+	//	MainGameWidget->CharacterAbility = Cast<APortfolioCharacterAbility>(NewPawn);
+	//}
 }
