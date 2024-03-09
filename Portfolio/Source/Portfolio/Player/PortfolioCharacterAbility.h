@@ -77,7 +77,5 @@ public:
 	UFUNCTION()
 	void OnRep_AnimationSkeletalMesh();
 
-
-
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 };

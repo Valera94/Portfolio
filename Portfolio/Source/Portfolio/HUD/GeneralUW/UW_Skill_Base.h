@@ -8,6 +8,7 @@
 #include "Components/ProgressBar.h"
 #include "Components/TextBlock.h"
 #include "Abilities/GameplayAbility.h"
+#include "Components/Button.h"
 #include "Portfolio/HUD/AbilityInterface.h"
 #include "UW_Skill_Base.generated.h"
 
@@ -18,7 +19,7 @@ class PORTFOLIO_API UUW_Skill_Base : public UUserWidget, public IAbilityInterfac
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadWrite,meta =(AllowPrivateAccess,BindWidget))
-	TObjectPtr<UImage> ImageSkill;
+	TObjectPtr<UButton> ButtonSkill;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, meta = (AllowPrivateAccess, BindWidget))
 	TObjectPtr<UTextBlock> ButtonText;
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess, BindWidget))

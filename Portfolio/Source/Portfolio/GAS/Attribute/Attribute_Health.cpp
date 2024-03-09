@@ -18,7 +18,7 @@ void UAttribute_Health::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAttribute_Health, Health, OldHealth);
 
-	if (GetActorInfo()->IsLocallyControlled())
+	if (GetActorInfo()->IsLocallyControlledPlayer())
 	{
 		ChangeHealth(FVector2D(HealthMax.GetCurrentValue(), Health.GetCurrentValue()));
 		UWDamageNotify(0, Health.GetCurrentValue() - OldHealth.GetBaseValue(), GetActorInfo()->AvatarActor.Get());
@@ -68,8 +68,10 @@ void UAttribute_Health::ChangeHealth_Implementation(const FVector2D Value)
 	TArray<UUserWidget*> UserWidgetArr;
 	UWidgetBlueprintLibrary::GetAllWidgetsWithInterface(GetWorld(), UserWidgetArr, UHUDInterface::StaticClass(), false);
 
-	for (auto i : UserWidgetArr)
-	{
-		Cast<IHUDInterface>(i)->IHI_ChangeMainAttribute(Value);
-	}
+
+		for (auto i : UserWidgetArr)
+		{
+			Cast<IHUDInterface>(i)->IHI_ChangeMainAttribute(Value);
+		}
+	
 }

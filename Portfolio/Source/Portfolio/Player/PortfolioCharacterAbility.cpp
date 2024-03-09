@@ -62,10 +62,7 @@ void APortfolioCharacterAbility::PossessedBy(AController* NewController)
 
 void APortfolioCharacterAbility::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
-
-
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
 
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent))
@@ -101,5 +98,5 @@ void APortfolioCharacterAbility::GetLifetimeReplicatedProps(TArray<FLifetimeProp
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(APortfolioCharacterAbility, ViewSkeletalMesh)
-		DOREPLIFETIME(APortfolioCharacterAbility, AnimationSkeletalMesh)
+	DOREPLIFETIME(APortfolioCharacterAbility, AnimationSkeletalMesh)
 }

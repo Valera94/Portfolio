@@ -210,7 +210,6 @@ void ACharacterCreator::Server_PossessClient_Implementation(APlayerController* T
 	FActorSpawnParameters SpawnParameters;
 	SpawnParameters.bNoFail = true;
 	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-
 	ACharacter* CreatedActor = ThisController->GetWorld()->SpawnActor<ACharacter>(DataTableCharacter.struct_Class[InformationAboutWidget.IndexClass].ClassForSpawnAndPossess, LSpawnLocation[0]->GetActorTransform(), SpawnParameters);
 
 

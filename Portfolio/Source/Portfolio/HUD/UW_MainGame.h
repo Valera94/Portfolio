@@ -10,14 +10,6 @@
 
 class UCanvasPanel;
 
-UENUM(BlueprintType)
-enum ELayer
-{
-	Layer_Pawn, //OverlayCanvas - index 0
-	Layer_Info, //OverlayCanvas - index 1
-	Layer_Menu, //OverlayCanvas - index 2
-};
-
 /**
  *
  */
@@ -26,23 +18,7 @@ class PORTFOLIO_API UUW_MainGame : public UUserWidget
 {
 	GENERATED_BODY()
 
-public:
-	
-
-public:
-
-	UFUNCTION(BlueprintCallable, Category = "PortfolioHUD")
-	void ChangeWidgetLayerToOther(const ELayer SelectLayerChange, UUserWidget* ChangeToNewWidget);
-
-	UFUNCTION(BlueprintCallable, Category = "PortfolioHUD")
-	void ChangeLayerPawn(UUserWidget* UserWidget);
-
 	virtual void NativeConstruct() override;
-
-protected:
-
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	UOverlay* OverlayCanvas;
 
 public:
 

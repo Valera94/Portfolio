@@ -7,7 +7,7 @@
 #include "HUDInterfaceSettings.generated.h"
 
 // This class does not need to be modified.
-UINTERFACE(MinimalAPI)
+UINTERFACE(MinimalAPI,Blueprintable)
 class UHUDInterfaceSettings : public UInterface
 {
 	GENERATED_BODY()
@@ -22,4 +22,12 @@ class PORTFOLIO_API IHUDInterfaceSettings
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void ActivateUiContainerAbility(bool Activate, int32 ActivateIndex);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void ChangeInputAbility(const uint8& Index,const FKey& Key);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
+	void SavePortfolioSaveGame();
 };

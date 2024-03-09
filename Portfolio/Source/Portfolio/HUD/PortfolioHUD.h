@@ -6,6 +6,7 @@
 #include "UW_MainGame.h"
 #include "GameFramework/HUD.h"
 #include "Layer/UW_LayerPawn.h"
+#include "Portfolio/Game/PortfolioSaveGame.h"
 #include "PortfolioHUD.generated.h"
 
 //class UUW_MainGame;
@@ -22,14 +23,25 @@ class PORTFOLIO_API APortfolioHUD : public AHUD
 
 public:
 
-	//Main Game Widget
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly,Instanced, Category = "Layer", meta = (AllowPrivateAccess))
-	TObjectPtr<UUW_MainGame> MainGameWidget;
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Layer", meta = (AllowPrivateAccess))
+	TObjectPtr<UUW_MainGame> PawnWidget;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Layer", meta = (AllowPrivateAccess))
+	TObjectPtr<UUserWidget> MenuWidget;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Layer", meta = (AllowPrivateAccess))
+	TObjectPtr<UUserWidget> InfoWidget;
+
 
 	virtual void BeginPlay() override;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent)
 	void BindDelegatePossessed(APawn* OldPawn, APawn* NewPawn);
 
+	UFUNCTION(BlueprintCallable)
+	void SaveSettingKeyboard(FSetting Setting);
+
+	UFUNCTION(BlueprintCallable)
+	FSetting LoadSaveSettingKeyboard();
 
 };
